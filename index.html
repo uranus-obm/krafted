@@ -1,232 +1,279 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Krafted — Handmade Marketplace</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --pink: #E18298;
-    --pink-dark: #c9677d;
-    --purple: #796C8C;
-    --purple-dark: #5e5270;
-    --teal: #679F9E;
-    --teal-dark: #4e8887;
-    --cream: #E6D4BE;
-    --blue: #7DADDB;
-    --blue-dark: #5e97cc;
-    --bg: #f5ede3;
-    --ink: #2c2040;
-    --muted: #6b5f7a;
-    --card-bg: #fdf7f0;
-  }
-  html { scroll-behavior: smooth; }
-  body { background: var(--bg); color: var(--ink); font-family: 'Lora', serif; overflow-x: hidden; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --pink:#E18298;--pink-dark:#c9677d;
+  --purple:#796C8C;--purple-dark:#5e5270;
+  --teal:#679F9E;--teal-dark:#4e8887;
+  --cream:#E6D4BE;--blue:#7DADDB;--blue-dark:#5e97cc;
+  --bg:#f5ede3;--ink:#2c2040;--muted:#6b5f7a;--card-bg:#fdf7f0;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--ink);font-family:'Lora',serif;overflow-x:hidden;}
 
-  /* PAGE SYSTEM */
-  .page { display: none; min-height: 100vh; }
-  .page.active { display: block; }
+/* ── PAGE SYSTEM ── */
+.page{display:none;min-height:100vh;}
+.page.active{display:block;}
 
-  /* NAV */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    background: rgba(230,212,190,0.93); backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(121,108,140,0.15);
-    padding: 0 2.5rem; height: 64px;
-    display: flex; align-items: center; justify-content: space-between;
-    transition: box-shadow 0.3s;
-  }
-  nav.scrolled { box-shadow: 0 2px 24px rgba(44,32,64,0.1); }
-  .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; color: var(--purple); letter-spacing: -0.5px; text-decoration: none; cursor: pointer; }
-  .nav-logo span { color: var(--pink); }
-  .nav-links { display: flex; gap: 2rem; list-style: none; }
-  .nav-links a { font-family: 'Lora', serif; font-size: 0.9rem; color: var(--muted); text-decoration: none; transition: color 0.2s; cursor: pointer; }
-  .nav-links a:hover { color: var(--pink); }
-  .cart-btn { background: var(--pink); color: white; border: none; cursor: pointer; padding: 0.5rem 1.2rem; border-radius: 2rem; font-family: 'Lora', serif; font-size: 0.85rem; display: flex; align-items: center; gap: 6px; transition: background 0.2s, transform 0.15s; }
-  .cart-btn:hover { background: var(--pink-dark); transform: scale(1.03); }
-  .cart-count { background: white; color: var(--pink); border-radius: 50%; width: 18px; height: 18px; font-size: 0.7rem; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(230,212,190,0.93);backdrop-filter:blur(10px);border-bottom:1px solid rgba(121,108,140,0.15);padding:0 2.5rem;height:64px;display:flex;align-items:center;justify-content:space-between;transition:box-shadow 0.3s;}
+nav.scrolled{box-shadow:0 2px 24px rgba(44,32,64,0.1);}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:900;color:var(--purple);letter-spacing:-0.5px;text-decoration:none;cursor:pointer;}
+.nav-logo span{color:var(--pink);}
+.nav-links{display:flex;gap:2rem;list-style:none;}
+.nav-links a{font-family:'Lora',serif;font-size:0.9rem;color:var(--muted);text-decoration:none;transition:color 0.2s;cursor:pointer;}
+.nav-links a:hover{color:var(--pink);}
+.cart-btn{background:var(--pink);color:white;border:none;cursor:pointer;padding:0.5rem 1.2rem;border-radius:2rem;font-family:'Lora',serif;font-size:0.85rem;display:flex;align-items:center;gap:6px;transition:background 0.2s,transform 0.15s;}
+.cart-btn:hover{background:var(--pink-dark);transform:scale(1.03);}
+.cart-count{background:white;color:var(--pink);border-radius:50%;width:18px;height:18px;font-size:0.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;}
 
-  /* HERO */
-  .hero {
-    min-height: 100vh; position: relative; overflow: hidden;
-    display: flex; align-items: center;
-    background: linear-gradient(145deg, #c9afc8 0%, #796C8C 35%, #679F9E 75%, #7DADDB 100%);
-  }
-  .pollen-canvas { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
-  .hills { position: absolute; bottom: 80px; left: 0; right: 0; z-index: 2; pointer-events: none; }
-  .grass-layer { position: absolute; bottom: 0; left: 0; right: 0; z-index: 4; pointer-events: none; height: 130px; }
-  .grass-blade { position: absolute; bottom: 0; border-radius: 4px 4px 0 0; transform-origin: bottom center; animation: sway linear infinite; }
-  @keyframes sway { 0%{transform:rotate(0deg) scaleY(1)} 25%{transform:rotate(6deg) scaleY(0.98)} 50%{transform:rotate(-4deg) scaleY(1.01)} 75%{transform:rotate(5deg) scaleY(0.99)} 100%{transform:rotate(0deg) scaleY(1)} }
-  .pixel-char-wrap { position: absolute; bottom: 90px; left: 13%; z-index: 5; display: flex; flex-direction: column; align-items: center; cursor: pointer; }
-  .pixel-char-wrap:hover .speech-bubble { opacity: 1; transform: translateY(0); }
-  .pixel-canvas { image-rendering: pixelated; display: block; }
-  .speech-bubble { background: white; border: 2px solid var(--ink); border-radius: 8px; padding: 4px 10px; font-family: 'Lora', serif; font-size: 0.7rem; color: var(--ink); white-space: nowrap; margin-bottom: 6px; position: relative; opacity: 0; transform: translateY(6px); transition: all 0.25s; }
-  .speech-bubble::after { content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); border: 4px solid transparent; border-top-color: var(--ink); }
-  .hero-content { position: relative; z-index: 6; padding: 100px 5% 160px; display: flex; align-items: center; justify-content: flex-end; width: 100%; }
-  .hero-text { max-width: 520px; }
-  .hero-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.2); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.35); border-radius: 2rem; padding: 6px 16px; font-size: 0.8rem; color: white; font-weight: 600; margin-bottom: 1.5rem; animation: fadeUp 0.6s ease both; }
-  .hero-heading { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 6vw, 5.5rem); font-weight: 900; color: white; line-height: 1.05; margin-bottom: 1.2rem; text-shadow: 0 2px 24px rgba(44,32,64,0.2); }
-  .hero-heading .line { display: block; overflow: hidden; }
-  .hero-heading .line span { display: inline-block; animation: slideUp 0.7s cubic-bezier(0.16,1,0.3,1) both; }
-  .hero-heading .line:nth-child(2) span { animation-delay: 0.12s; }
-  @keyframes slideUp { from{transform:translateY(110%);opacity:0} to{transform:translateY(0);opacity:1} }
-  .hero-sub { font-size: 1.05rem; color: rgba(255,255,255,0.88); line-height: 1.7; margin-bottom: 2rem; animation: fadeUp 0.8s 0.4s ease both; }
-  .hero-cta { background: white; color: var(--purple); border: none; cursor: pointer; padding: 0.9rem 2.2rem; border-radius: 2rem; font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; display: inline-flex; align-items: center; gap: 10px; transition: transform 0.15s, box-shadow 0.2s; animation: fadeUp 0.8s 0.55s ease both; box-shadow: 0 4px 20px rgba(44,32,64,0.2); }
-  .hero-cta:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 8px 30px rgba(44,32,64,0.25); }
-  .hero-cta-arrow { transition: transform 0.2s; }
-  .hero-cta:hover .hero-cta-arrow { transform: translateX(4px); }
-  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+/* ── HERO ── */
+.hero{min-height:100vh;position:relative;overflow:hidden;display:flex;align-items:center;background:linear-gradient(145deg,#c9afc8 0%,#796C8C 35%,#679F9E 75%,#7DADDB 100%);}
+.pollen-canvas{position:absolute;inset:0;pointer-events:none;z-index:1;}
+.hills{position:absolute;bottom:80px;left:0;right:0;z-index:2;pointer-events:none;}
+.grass-layer{position:absolute;bottom:0;left:0;right:0;z-index:4;pointer-events:none;height:130px;}
+.grass-blade{position:absolute;bottom:0;border-radius:4px 4px 0 0;transform-origin:bottom center;animation:sway linear infinite;}
+@keyframes sway{0%{transform:rotate(0deg) scaleY(1)}25%{transform:rotate(6deg) scaleY(0.98)}50%{transform:rotate(-4deg) scaleY(1.01)}75%{transform:rotate(5deg) scaleY(0.99)}100%{transform:rotate(0deg) scaleY(1)}}
+.pixel-char-wrap{position:absolute;bottom:90px;left:13%;z-index:5;display:flex;flex-direction:column;align-items:center;cursor:pointer;}
+.pixel-char-wrap:hover .speech-bubble{opacity:1;transform:translateY(0);}
+.pixel-canvas{image-rendering:pixelated;display:block;}
+.speech-bubble{background:white;border:2px solid var(--ink);border-radius:8px;padding:4px 10px;font-family:'Lora',serif;font-size:0.7rem;color:var(--ink);white-space:nowrap;margin-bottom:6px;position:relative;opacity:0;transform:translateY(6px);transition:all 0.25s;}
+.speech-bubble::after{content:'';position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);border:4px solid transparent;border-top-color:var(--ink);}
+.hero-content{position:relative;z-index:6;padding:100px 5% 160px;display:flex;align-items:center;justify-content:flex-end;width:100%;}
+.hero-text{max-width:520px;}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.2);backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,0.35);border-radius:2rem;padding:6px 16px;font-size:0.8rem;color:white;font-weight:600;margin-bottom:1.5rem;animation:fadeUp 0.6s ease both;}
+.hero-heading{font-family:'Playfair Display',serif;font-size:clamp(3rem,6vw,5.5rem);font-weight:900;color:white;line-height:1.05;margin-bottom:1.2rem;text-shadow:0 2px 24px rgba(44,32,64,0.2);}
+.hero-heading .line{display:block;overflow:hidden;}
+.hero-heading .line span{display:inline-block;animation:slideUp 0.7s cubic-bezier(0.16,1,0.3,1) both;}
+.hero-heading .line:nth-child(2) span{animation-delay:0.12s;}
+@keyframes slideUp{from{transform:translateY(110%);opacity:0}to{transform:translateY(0);opacity:1}}
+.hero-sub{font-size:1.05rem;color:rgba(255,255,255,0.88);line-height:1.7;margin-bottom:2rem;animation:fadeUp 0.8s 0.4s ease both;}
+.hero-cta{background:white;color:var(--purple);border:none;cursor:pointer;padding:0.9rem 2.2rem;border-radius:2rem;font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;display:inline-flex;align-items:center;gap:10px;transition:transform 0.15s,box-shadow 0.2s;animation:fadeUp 0.8s 0.55s ease both;box-shadow:0 4px 20px rgba(44,32,64,0.2);}
+.hero-cta:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 8px 30px rgba(44,32,64,0.25);}
+.hero-cta-arrow{transition:transform 0.2s;}
+.hero-cta:hover .hero-cta-arrow{transform:translateX(4px);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 
-  /* SECTIONS */
-  section { padding: 5rem 5%; }
-  .section-label { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--teal); font-weight: 600; margin-bottom: 0.6rem; }
-  .section-heading { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 700; color: var(--ink); margin-bottom: 0.5rem; }
-  .section-sub { font-size: 1rem; color: var(--muted); max-width: 500px; line-height: 1.7; margin-bottom: 3rem; }
+/* ── SECTIONS ── */
+section{padding:5rem 5%;}
+.section-label{font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--teal);font-weight:600;margin-bottom:0.6rem;}
+.section-heading{font-family:'Playfair Display',serif;font-size:clamp(2rem,3.5vw,3rem);font-weight:700;color:var(--ink);margin-bottom:0.5rem;}
+.section-sub{font-size:1rem;color:var(--muted);max-width:500px;line-height:1.7;margin-bottom:3rem;}
+.categories-section{background:var(--cream);}
+.cat-grid{display:flex;gap:1rem;flex-wrap:wrap;}
+.cat-pill{padding:0.55rem 1.4rem;border-radius:2rem;border:1.5px solid var(--purple);font-family:'Lora',serif;font-size:0.9rem;color:var(--purple);cursor:pointer;transition:all 0.2s;background:transparent;}
+.cat-pill:hover,.cat-pill.active{background:var(--purple);color:white;}
+.products-section{background:var(--bg);}
+.product-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.8rem;}
+@media(max-width:768px){.product-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:480px){.product-grid{grid-template-columns:1fr;}}
+.product-card{background:var(--card-bg);border-radius:20px;overflow:hidden;border:1px solid rgba(121,108,140,0.12);cursor:pointer;transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.25s;position:relative;}
+.product-card:hover{transform:translateY(-8px) rotate(-0.4deg);box-shadow:0 20px 50px rgba(121,108,140,0.18);}
+.product-card:hover .card-actions{transform:translateY(0);opacity:1;}
+.product-img{width:100%;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;font-size:3.2rem;position:relative;overflow:hidden;}
+.product-img-bg{position:absolute;inset:0;opacity:0.18;}
+.product-svg{position:relative;z-index:1;}
+.product-body{padding:1rem 1.2rem 3.8rem;}
+.artisan-tag{font-size:0.72rem;color:var(--teal);font-weight:600;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:0.4rem;}
+.product-name{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:0.5rem;line-height:1.3;}
+.product-price{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--purple);}
+.product-price .original{font-size:0.8rem;color:var(--muted);text-decoration:line-through;margin-left:6px;font-weight:400;font-family:'Lora',serif;}
+.card-actions{position:absolute;bottom:0;left:0;right:0;display:flex;transform:translateY(100%);opacity:0;transition:all 0.28s cubic-bezier(0.34,1.56,0.64,1);}
+.btn-view{flex:1;background:var(--purple);color:white;border:none;cursor:pointer;padding:0.75rem;font-family:'Lora',serif;font-size:0.82rem;font-weight:600;transition:background 0.2s;}
+.btn-view:hover{background:var(--purple-dark);}
+.btn-order{flex:1;background:var(--pink);color:white;border:none;cursor:pointer;padding:0.75rem;font-family:'Lora',serif;font-size:0.82rem;font-weight:600;transition:background 0.2s;border-left:1px solid rgba(255,255,255,0.2);}
+.btn-order:hover{background:var(--pink-dark);}
+.artisans-section{background:#ede0d4;}
+.artisan-strip{display:flex;gap:1.4rem;overflow-x:auto;padding-bottom:1rem;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:var(--purple) transparent;}
+.artisan-card{flex:0 0 220px;background:white;border-radius:20px;padding:1.4rem;border:1px solid rgba(121,108,140,0.1);text-align:center;transition:transform 0.2s,box-shadow 0.2s;}
+.artisan-card:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(121,108,140,0.14);}
+.artisan-avatar{width:70px;height:70px;border-radius:50%;background:var(--cream);margin:0 auto 0.8rem;display:flex;align-items:center;justify-content:center;font-size:2rem;border:3px solid var(--pink);}
+.artisan-name{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--ink);margin-bottom:2px;}
+.artisan-loc{font-size:0.78rem;color:var(--muted);margin-bottom:0.4rem;}
+.artisan-specialty{font-size:0.8rem;color:var(--teal);font-weight:600;margin-bottom:0.8rem;}
+.stars{color:var(--blue);font-size:0.85rem;margin-bottom:0.8rem;}
+.view-btn{border:1.5px solid var(--purple);background:transparent;color:var(--purple);padding:0.4rem 1.1rem;border-radius:2rem;font-family:'Lora',serif;font-size:0.8rem;cursor:pointer;transition:all 0.2s;}
+.view-btn:hover{background:var(--purple);color:white;}
+.story-banner{background:var(--purple);color:white;padding:5rem 5%;display:flex;align-items:center;justify-content:space-between;gap:3rem;flex-wrap:wrap;}
+.story-text .section-label{color:var(--cream);}
+.story-text .section-heading{color:white;margin-bottom:1rem;}
+.story-text .section-sub{color:rgba(255,255,255,0.75);margin-bottom:1.8rem;}
+.story-cta{background:var(--pink);color:white;border:none;cursor:pointer;padding:0.85rem 2rem;border-radius:2rem;font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;transition:all 0.2s;}
+.story-cta:hover{background:var(--pink-dark);transform:translateY(-2px);}
+.story-art{font-size:7rem;line-height:1;opacity:0.85;}
+footer{background:#1e1830;color:rgba(255,255,255,0.7);padding:4rem 5% 2rem;}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:3rem;margin-bottom:3rem;}
+@media(max-width:640px){.footer-grid{grid-template-columns:1fr;}}
+.footer-brand{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;color:white;margin-bottom:0.8rem;}
+.footer-brand span{color:var(--pink);}
+.footer-desc{font-size:0.9rem;line-height:1.7;max-width:280px;}
+.footer-col h4{font-family:'Playfair Display',serif;color:white;font-size:1rem;margin-bottom:1rem;}
+.footer-col ul{list-style:none;}
+.footer-col ul li{margin-bottom:0.5rem;}
+.footer-col ul li a{color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.88rem;transition:color 0.2s;}
+.footer-col ul li a:hover{color:var(--pink);}
+.footer-bottom{border-top:1px solid rgba(255,255,255,0.08);padding-top:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;}
+.footer-bottom p{font-size:0.8rem;}
+.newsletter-form{display:flex;gap:0.6rem;flex-wrap:wrap;}
+.newsletter-input{flex:1;min-width:200px;padding:0.7rem 1.2rem;border-radius:2rem;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.08);color:white;font-family:'Lora',serif;font-size:0.9rem;outline:none;}
+.newsletter-input::placeholder{color:rgba(255,255,255,0.4);}
+.newsletter-btn{background:var(--pink);color:white;border:none;padding:0.7rem 1.4rem;border-radius:2rem;font-family:'Lora',serif;font-size:0.9rem;cursor:pointer;transition:background 0.2s;}
+.newsletter-btn:hover{background:var(--pink-dark);}
+.toast{position:fixed;bottom:2rem;right:2rem;z-index:999;background:var(--ink);color:white;padding:0.8rem 1.4rem;border-radius:2rem;font-size:0.9rem;font-family:'Lora',serif;transform:translateY(100px);opacity:0;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 8px 30px rgba(44,32,64,0.3);}
+.toast.show{transform:translateY(0);opacity:1;}
+.reveal{opacity:0;transform:translateY(30px);transition:opacity 0.7s ease,transform 0.7s cubic-bezier(0.16,1,0.3,1);}
+.reveal.visible{opacity:1;transform:translateY(0);}
 
-  /* CATEGORIES */
-  .categories-section { background: var(--cream); }
-  .cat-grid { display: flex; gap: 1rem; flex-wrap: wrap; }
-  .cat-pill { padding: 0.55rem 1.4rem; border-radius: 2rem; border: 1.5px solid var(--purple); font-family: 'Lora', serif; font-size: 0.9rem; color: var(--purple); cursor: pointer; transition: all 0.2s; background: transparent; }
-  .cat-pill:hover, .cat-pill.active { background: var(--purple); color: white; }
+/* ── CONTACT PAGE ── */
+.contact-page{background:var(--bg);padding-top:64px;}
+.contact-hero{background:linear-gradient(135deg,#796C8C 0%,#679F9E 60%,#7DADDB 100%);padding:5rem 5% 4rem;text-align:center;color:white;}
+.contact-hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.5rem,5vw,4rem);font-weight:900;margin-bottom:1rem;}
+.contact-hero p{font-size:1.05rem;opacity:0.88;max-width:500px;margin:0 auto;line-height:1.7;}
+.contact-body{max-width:900px;margin:0 auto;padding:4rem 5%;display:grid;grid-template-columns:1fr 1.4fr;gap:3rem;align-items:start;}
+@media(max-width:680px){.contact-body{grid-template-columns:1fr;}}
+.contact-info h3{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--ink);margin-bottom:1rem;}
+.contact-info p{font-size:0.95rem;color:var(--muted);line-height:1.7;margin-bottom:1.5rem;}
+.info-item{display:flex;align-items:flex-start;gap:12px;margin-bottom:1.2rem;}
+.info-icon{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.info-icon.pink{background:rgba(225,130,152,0.12);}
+.info-icon.teal{background:rgba(103,159,158,0.12);}
+.info-icon.blue{background:rgba(125,173,219,0.12);}
+.info-text strong{display:block;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--teal);font-weight:600;margin-bottom:2px;}
+.info-text span{font-size:0.92rem;color:var(--ink);}
+.order-form-wrap{background:white;border-radius:20px;padding:2rem;border:1px solid rgba(121,108,140,0.12);box-shadow:0 8px 40px rgba(121,108,140,0.1);}
+.order-form-wrap h3{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--ink);margin-bottom:0.3rem;}
+.order-form-wrap .form-sub{font-size:0.85rem;color:var(--muted);margin-bottom:1.5rem;line-height:1.5;}
+.form-group{margin-bottom:1.1rem;}
+.form-group label{display:block;font-size:0.8rem;font-weight:600;color:var(--purple);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px;}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:0.7rem 1rem;border-radius:10px;border:1.5px solid rgba(121,108,140,0.2);background:var(--bg);font-family:'Lora',serif;font-size:0.9rem;color:var(--ink);outline:none;transition:border-color 0.2s,box-shadow 0.2s;}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(103,159,158,0.15);}
+.form-group textarea{resize:vertical;min-height:90px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.submit-btn{width:100%;background:linear-gradient(135deg,var(--pink),var(--purple));color:white;border:none;cursor:pointer;padding:1rem;border-radius:2rem;font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;margin-top:0.5rem;transition:opacity 0.2s,transform 0.15s;letter-spacing:0.03em;}
+.submit-btn:hover{opacity:0.9;transform:translateY(-2px);}
+.success-msg{display:none;text-align:center;padding:2rem 1rem;}
+.success-msg .success-icon{font-size:3rem;margin-bottom:1rem;}
+.success-msg h4{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--teal);margin-bottom:0.5rem;}
+.success-msg p{font-size:0.9rem;color:var(--muted);line-height:1.6;}
+.selected-product-banner{background:linear-gradient(135deg,rgba(103,159,158,0.12),rgba(125,173,219,0.12));border:1.5px solid rgba(103,159,158,0.25);border-radius:12px;padding:0.8rem 1rem;margin-bottom:1.2rem;display:none;}
+.selected-product-banner.show{display:flex;align-items:center;gap:10px;}
+.selected-product-banner .spb-text{flex:1;}
+.selected-product-banner .spb-name{font-size:0.88rem;font-weight:600;color:var(--ink);font-family:'Playfair Display',serif;}
+.selected-product-banner .spb-price{font-size:0.78rem;color:var(--teal);}
+.selected-product-banner .spb-clear{background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem;padding:0;}
 
-  /* PRODUCTS */
-  .products-section { background: var(--bg); }
-  .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.8rem; }
-  @media(max-width:768px) { .product-grid { grid-template-columns: 1fr 1fr; } }
-  @media(max-width:480px) { .product-grid { grid-template-columns: 1fr; } }
-  .product-card { background: var(--card-bg); border-radius: 20px; overflow: hidden; border: 1px solid rgba(121,108,140,0.12); cursor: pointer; transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s; position: relative; }
-  .product-card:hover { transform: translateY(-8px) rotate(-0.4deg); box-shadow: 0 20px 50px rgba(121,108,140,0.18); }
-  .product-card:hover .card-actions { transform: translateY(0); opacity: 1; }
-  .product-img { width: 100%; aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center; font-size: 3.2rem; position: relative; }
-  .product-img-bg { position: absolute; inset: 0; opacity: 0.18; }
-  .product-emoji { position: relative; z-index: 1; }
-  .product-body { padding: 1rem 1.2rem 3.8rem; }
-  .artisan-tag { font-size: 0.72rem; color: var(--teal); font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.4rem; }
-  .product-name { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--ink); margin-bottom: 0.5rem; line-height: 1.3; }
-  .product-price { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--purple); }
-  .product-price .original { font-size: 0.8rem; color: var(--muted); text-decoration: line-through; margin-left: 6px; font-weight: 400; font-family: 'Lora', serif; }
-  .card-actions { position: absolute; bottom: 0; left: 0; right: 0; display: flex; transform: translateY(100%); opacity: 0; transition: all 0.28s cubic-bezier(0.34,1.56,0.64,1); }
-  .btn-cart { flex: 1; background: var(--teal); color: white; border: none; cursor: pointer; padding: 0.75rem; font-family: 'Lora', serif; font-size: 0.82rem; font-weight: 600; transition: background 0.2s; }
-  .btn-cart:hover { background: var(--teal-dark); }
-  .btn-order { flex: 1; background: var(--pink); color: white; border: none; cursor: pointer; padding: 0.75rem; font-family: 'Lora', serif; font-size: 0.82rem; font-weight: 600; transition: background 0.2s; border-left: 1px solid rgba(255,255,255,0.2); }
-  .btn-order:hover { background: var(--pink-dark); }
+/* ════════════════════════════════════════
+   PRODUCT DETAIL PAGE
+════════════════════════════════════════ */
+.pdp{background:var(--bg);padding-top:64px;min-height:100vh;}
 
-  /* ARTISANS */
-  .artisans-section { background: #ede0d4; }
-  .artisan-strip { display: flex; gap: 1.4rem; overflow-x: auto; padding-bottom: 1rem; -webkit-overflow-scrolling: touch; scrollbar-width: thin; scrollbar-color: var(--purple) transparent; }
-  .artisan-card { flex: 0 0 220px; background: white; border-radius: 20px; padding: 1.4rem; border: 1px solid rgba(121,108,140,0.1); text-align: center; transition: transform 0.2s, box-shadow 0.2s; }
-  .artisan-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(121,108,140,0.14); }
-  .artisan-avatar { width: 70px; height: 70px; border-radius: 50%; background: var(--cream); margin: 0 auto 0.8rem; display: flex; align-items: center; justify-content: center; font-size: 2rem; border: 3px solid var(--pink); }
-  .artisan-name { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
-  .artisan-loc { font-size: 0.78rem; color: var(--muted); margin-bottom: 0.4rem; }
-  .artisan-specialty { font-size: 0.8rem; color: var(--teal); font-weight: 600; margin-bottom: 0.8rem; }
-  .stars { color: var(--blue); font-size: 0.85rem; margin-bottom: 0.8rem; }
-  .view-btn { border: 1.5px solid var(--purple); background: transparent; color: var(--purple); padding: 0.4rem 1.1rem; border-radius: 2rem; font-family: 'Lora', serif; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; }
-  .view-btn:hover { background: var(--purple); color: white; }
+/* breadcrumb */
+.pdp-breadcrumb{padding:1.2rem 5%;display:flex;align-items:center;gap:8px;font-size:0.8rem;color:var(--muted);font-family:'DM Mono',monospace;}
+.pdp-breadcrumb span{cursor:pointer;transition:color 0.2s;}
+.pdp-breadcrumb span:hover{color:var(--pink);}
+.pdp-breadcrumb .sep{opacity:0.4;}
 
-  /* STORY BANNER */
-  .story-banner { background: var(--purple); color: white; padding: 5rem 5%; display: flex; align-items: center; justify-content: space-between; gap: 3rem; flex-wrap: wrap; }
-  .story-text .section-label { color: var(--cream); }
-  .story-text .section-heading { color: white; margin-bottom: 1rem; }
-  .story-text .section-sub { color: rgba(255,255,255,0.75); margin-bottom: 1.8rem; }
-  .story-cta { background: var(--pink); color: white; border: none; cursor: pointer; padding: 0.85rem 2rem; border-radius: 2rem; font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; transition: all 0.2s; }
-  .story-cta:hover { background: var(--pink-dark); transform: translateY(-2px); }
-  .story-art { font-size: 7rem; line-height: 1; opacity: 0.85; }
+/* split layout */
+.pdp-split{display:grid;grid-template-columns:1fr 1fr;min-height:85vh;}
+@media(max-width:900px){.pdp-split{grid-template-columns:1fr;}}
 
-  /* FOOTER */
-  footer { background: #1e1830; color: rgba(255,255,255,0.7); padding: 4rem 5% 2rem; }
-  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem; }
-  @media(max-width:640px) { .footer-grid { grid-template-columns: 1fr; } }
-  .footer-brand { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; color: white; margin-bottom: 0.8rem; }
-  .footer-brand span { color: var(--pink); }
-  .footer-desc { font-size: 0.9rem; line-height: 1.7; max-width: 280px; }
-  .footer-col h4 { font-family: 'Playfair Display', serif; color: white; font-size: 1rem; margin-bottom: 1rem; }
-  .footer-col ul { list-style: none; }
-  .footer-col ul li { margin-bottom: 0.5rem; }
-  .footer-col ul li a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.88rem; transition: color 0.2s; }
-  .footer-col ul li a:hover { color: var(--pink); }
-  .footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
-  .footer-bottom p { font-size: 0.8rem; }
-  .newsletter-form { display: flex; gap: 0.6rem; flex-wrap: wrap; }
-  .newsletter-input { flex: 1; min-width: 200px; padding: 0.7rem 1.2rem; border-radius: 2rem; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.08); color: white; font-family: 'Lora', serif; font-size: 0.9rem; outline: none; }
-  .newsletter-input::placeholder { color: rgba(255,255,255,0.4); }
-  .newsletter-btn { background: var(--pink); color: white; border: none; padding: 0.7rem 1.4rem; border-radius: 2rem; font-family: 'Lora', serif; font-size: 0.9rem; cursor: pointer; transition: background 0.2s; }
-  .newsletter-btn:hover { background: var(--pink-dark); }
+/* LEFT — visual panel */
+.pdp-visual{position:sticky;top:64px;height:calc(100vh - 64px);display:flex;flex-direction:column;overflow:hidden;}
+.pdp-canvas-wrap{flex:1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.pdp-bg-layer{position:absolute;inset:0;transition:background 0.6s ease;}
+.pdp-art-canvas{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:1rem;}
+/* large SVG product illustration */
+.pdp-product-art{width:220px;height:220px;display:flex;align-items:center;justify-content:center;border-radius:24px;position:relative;}
+.pdp-product-glow{position:absolute;inset:-20px;border-radius:40px;filter:blur(30px);opacity:0.35;transition:background 0.6s;}
+.pdp-product-svg{position:relative;z-index:1;animation:pdpFloat 3s ease-in-out infinite;}
+@keyframes pdpFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
 
-  /* TOAST */
-  .toast { position: fixed; bottom: 2rem; right: 2rem; z-index: 999; background: var(--ink); color: white; padding: 0.8rem 1.4rem; border-radius: 2rem; font-size: 0.9rem; font-family: 'Lora', serif; transform: translateY(100px); opacity: 0; transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1); box-shadow: 0 8px 30px rgba(44,32,64,0.3); }
-  .toast.show { transform: translateY(0); opacity: 1; }
+/* pixel inspector character */
+.pdp-pixel-wrap{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;}
+.pdp-pixel-wrap:hover .pdp-bubble{opacity:1;transform:translateY(0);}
+.pdp-bubble{background:rgba(255,255,255,0.95);border:1.5px solid var(--ink);border-radius:10px;padding:5px 12px;font-family:'Lora',serif;font-size:0.7rem;color:var(--ink);white-space:nowrap;position:relative;opacity:0;transform:translateY(8px);transition:all 0.25s;margin-bottom:4px;}
+.pdp-bubble::after{content:'';position:absolute;bottom:-7px;left:50%;transform:translateX(-50%);border:4px solid transparent;border-top-color:var(--ink);}
+.pdp-pixel-canvas{image-rendering:pixelated;}
 
-  /* SCROLL REVEAL */
-  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16,1,0.3,1); }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
+/* stat ticker at bottom of visual */
+.pdp-stat-ticker{height:48px;background:rgba(44,32,64,0.06);border-top:1px solid rgba(121,108,140,0.1);display:flex;align-items:center;gap:2rem;padding:0 2rem;overflow:hidden;white-space:nowrap;}
+.pdp-ticker-item{font-family:'DM Mono',monospace;font-size:0.72rem;color:var(--muted);display:flex;align-items:center;gap:6px;}
+.pdp-ticker-dot{width:6px;height:6px;border-radius:50%;background:var(--teal);}
 
-  /* ── CONTACT PAGE ───────────────────────────── */
-  .contact-page { background: var(--bg); padding-top: 64px; }
-  .contact-hero {
-    background: linear-gradient(135deg, #796C8C 0%, #679F9E 60%, #7DADDB 100%);
-    padding: 5rem 5% 4rem; text-align: center; color: white;
-  }
-  .contact-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900; margin-bottom: 1rem; }
-  .contact-hero p { font-size: 1.05rem; opacity: 0.88; max-width: 500px; margin: 0 auto; line-height: 1.7; }
-  .contact-body { max-width: 900px; margin: 0 auto; padding: 4rem 5%; display: grid; grid-template-columns: 1fr 1.4fr; gap: 3rem; align-items: start; }
-  @media(max-width:680px) { .contact-body { grid-template-columns: 1fr; } }
-  .contact-info h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--ink); margin-bottom: 1rem; }
-  .contact-info p { font-size: 0.95rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.5rem; }
-  .info-item { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 1.2rem; }
-  .info-icon { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
-  .info-icon.pink { background: rgba(225,130,152,0.12); }
-  .info-icon.teal { background: rgba(103,159,158,0.12); }
-  .info-icon.blue { background: rgba(125,173,219,0.12); }
-  .info-text strong { display: block; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--teal); font-weight: 600; margin-bottom: 2px; }
-  .info-text span { font-size: 0.92rem; color: var(--ink); }
+/* RIGHT — info panel */
+.pdp-info{padding:3rem 3rem 3rem 2.5rem;overflow-y:auto;}
+@media(max-width:900px){.pdp-visual{position:relative;height:60vw;min-height:320px;}.pdp-info{padding:2rem 5%;}}
 
-  /* ORDER FORM */
-  .order-form-wrap { background: white; border-radius: 20px; padding: 2rem; border: 1px solid rgba(121,108,140,0.12); box-shadow: 0 8px 40px rgba(121,108,140,0.1); }
-  .order-form-wrap h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--ink); margin-bottom: 0.3rem; }
-  .order-form-wrap .form-sub { font-size: 0.85rem; color: var(--muted); margin-bottom: 1.5rem; line-height: 1.5; }
-  .form-group { margin-bottom: 1.1rem; }
-  .form-group label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--purple); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 6px; }
-  .form-group input, .form-group select, .form-group textarea {
-    width: 100%; padding: 0.7rem 1rem; border-radius: 10px;
-    border: 1.5px solid rgba(121,108,140,0.2); background: var(--bg);
-    font-family: 'Lora', serif; font-size: 0.9rem; color: var(--ink);
-    outline: none; transition: border-color 0.2s, box-shadow 0.2s;
-  }
-  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-    border-color: var(--teal); box-shadow: 0 0 0 3px rgba(103,159,158,0.15);
-  }
-  .form-group textarea { resize: vertical; min-height: 90px; }
-  .form-group select { cursor: pointer; }
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-  .submit-btn {
-    width: 100%; background: linear-gradient(135deg, var(--pink), var(--purple));
-    color: white; border: none; cursor: pointer; padding: 1rem;
-    border-radius: 2rem; font-family: 'Playfair Display', serif; font-size: 1rem;
-    font-weight: 700; margin-top: 0.5rem; transition: opacity 0.2s, transform 0.15s;
-    letter-spacing: 0.03em;
-  }
-  .submit-btn:hover { opacity: 0.9; transform: translateY(-2px); }
-  .submit-btn:active { transform: scale(0.98); }
-  .success-msg { display: none; text-align: center; padding: 2rem 1rem; }
-  .success-msg .success-icon { font-size: 3rem; margin-bottom: 1rem; }
-  .success-msg h4 { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--teal); margin-bottom: 0.5rem; }
-  .success-msg p { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
+.pdp-cat-tag{display:inline-block;font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;background:rgba(103,159,158,0.12);color:var(--teal);padding:4px 12px;border-radius:2rem;margin-bottom:1.2rem;}
 
-  /* PRODUCT SELECTED BANNER */
-  .selected-product-banner {
-    background: linear-gradient(135deg, rgba(103,159,158,0.12), rgba(125,173,219,0.12));
-    border: 1.5px solid rgba(103,159,158,0.25); border-radius: 12px;
-    padding: 0.8rem 1rem; margin-bottom: 1.2rem; display: none;
-  }
-  .selected-product-banner.show { display: flex; align-items: center; gap: 10px; }
-  .selected-product-banner .spb-emoji { font-size: 1.4rem; }
-  .selected-product-banner .spb-text { flex: 1; }
-  .selected-product-banner .spb-name { font-size: 0.88rem; font-weight: 600; color: var(--ink); font-family: 'Playfair Display', serif; }
-  .selected-product-banner .spb-price { font-size: 0.78rem; color: var(--teal); }
-  .selected-product-banner .spb-clear { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1rem; padding: 0; }
+.pdp-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3vw,2.8rem);font-weight:900;color:var(--ink);line-height:1.1;margin-bottom:0.5rem;}
+
+.pdp-artisan-row{display:flex;align-items:center;gap:10px;margin-bottom:1.8rem;}
+.pdp-artisan-dot{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;border:2px solid var(--pink);}
+.pdp-artisan-meta{}
+.pdp-artisan-name{font-size:0.88rem;font-weight:600;color:var(--ink);}
+.pdp-artisan-loc{font-size:0.78rem;color:var(--muted);}
+
+/* price row */
+.pdp-price-row{display:flex;align-items:baseline;gap:12px;margin-bottom:2rem;padding-bottom:2rem;border-bottom:1px solid rgba(121,108,140,0.1);}
+.pdp-price{font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:900;color:var(--purple);}
+.pdp-original{font-size:1rem;color:var(--muted);text-decoration:line-through;font-family:'Lora',serif;}
+.pdp-badge{background:rgba(225,130,152,0.12);color:var(--pink);font-size:0.75rem;font-weight:600;font-family:'DM Mono',monospace;padding:4px 10px;border-radius:2rem;border:1px solid rgba(225,130,152,0.25);}
+
+/* description */
+.pdp-desc{font-size:0.95rem;color:var(--muted);line-height:1.85;margin-bottom:2rem;}
+
+/* material tags */
+.pdp-materials{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:2rem;}
+.pdp-mat-tag{padding:6px 14px;border-radius:2rem;border:1px solid rgba(121,108,140,0.2);font-family:'DM Mono',monospace;font-size:0.72rem;color:var(--purple);background:white;transition:all 0.2s;cursor:default;}
+.pdp-mat-tag:hover{background:var(--purple);color:white;border-color:var(--purple);}
+
+/* details accordion */
+.pdp-accordion{margin-bottom:2rem;}
+.pdp-acc-item{border-bottom:1px solid rgba(121,108,140,0.12);}
+.pdp-acc-head{width:100%;background:none;border:none;padding:1rem 0;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--ink);text-align:left;}
+.pdp-acc-head:hover{color:var(--purple);}
+.pdp-acc-arrow{transition:transform 0.25s;font-size:0.8rem;color:var(--muted);}
+.pdp-acc-item.open .pdp-acc-arrow{transform:rotate(90deg);}
+.pdp-acc-body{max-height:0;overflow:hidden;transition:max-height 0.35s ease;}
+.pdp-acc-item.open .pdp-acc-body{max-height:300px;}
+.pdp-acc-body p,.pdp-acc-body ul{font-size:0.88rem;color:var(--muted);line-height:1.8;padding-bottom:1rem;}
+.pdp-acc-body ul{padding-left:1rem;}
+.pdp-acc-body ul li{margin-bottom:4px;}
+
+/* quantity + CTA */
+.pdp-purchase{background:white;border-radius:20px;padding:1.5rem;border:1px solid rgba(121,108,140,0.1);}
+.pdp-qty-label{font-size:0.78rem;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:0.6rem;}
+.pdp-qty-row{display:flex;align-items:center;gap:0;margin-bottom:1.2rem;width:fit-content;border:1.5px solid rgba(121,108,140,0.2);border-radius:12px;overflow:hidden;}
+.pdp-qty-btn{width:44px;height:44px;border:none;background:transparent;cursor:pointer;font-size:1.2rem;color:var(--purple);transition:background 0.15s;display:flex;align-items:center;justify-content:center;}
+.pdp-qty-btn:hover{background:rgba(121,108,140,0.06);}
+.pdp-qty-num{width:50px;text-align:center;font-family:'DM Mono',monospace;font-size:1rem;font-weight:500;color:var(--ink);border-left:1px solid rgba(121,108,140,0.15);border-right:1px solid rgba(121,108,140,0.15);height:44px;display:flex;align-items:center;justify-content:center;}
+.pdp-cta-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.pdp-cta-cart{background:var(--teal);color:white;border:none;cursor:pointer;padding:0.9rem;border-radius:12px;font-family:'Lora',serif;font-size:0.9rem;font-weight:600;transition:background 0.2s,transform 0.15s;}
+.pdp-cta-cart:hover{background:var(--teal-dark);transform:translateY(-1px);}
+.pdp-cta-order{background:linear-gradient(135deg,var(--pink),var(--purple));color:white;border:none;cursor:pointer;padding:0.9rem;border-radius:12px;font-family:'Lora',serif;font-size:0.9rem;font-weight:600;transition:opacity 0.2s,transform 0.15s;}
+.pdp-cta-order:hover{opacity:0.88;transform:translateY(-1px);}
+
+/* artisan story strip */
+.pdp-artisan-story{background:linear-gradient(135deg,var(--purple),var(--teal));color:white;padding:3rem 5%;display:flex;gap:3rem;align-items:center;flex-wrap:wrap;}
+.pdp-story-text h3{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;margin-bottom:0.6rem;}
+.pdp-story-text p{font-size:0.92rem;opacity:0.85;line-height:1.8;max-width:480px;}
+.pdp-story-stats{display:flex;gap:2rem;flex-wrap:wrap;margin-top:1.5rem;}
+.pdp-story-stat{}
+.pdp-stat-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;}
+.pdp-stat-label{font-size:0.78rem;opacity:0.7;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:0.1em;}
+
+/* related products */
+.pdp-related{padding:4rem 5%;}
+.pdp-related h3{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--ink);margin-bottom:2rem;}
+.pdp-related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;}
+@media(max-width:640px){.pdp-related-grid{grid-template-columns:1fr 1fr;}}
 </style>
 </head>
 <body>
@@ -235,18 +282,17 @@
 <nav id="nav">
   <a class="nav-logo" onclick="showPage('home')">Kraft<span>ed</span></a>
   <ul class="nav-links">
-    <li><a onclick="showPage('home'); setTimeout(()=>document.getElementById('shop').scrollIntoView({behavior:'smooth'}),100)">Shop</a></li>
-    <li><a onclick="showPage('home'); setTimeout(()=>document.getElementById('artisans').scrollIntoView({behavior:'smooth'}),100)">Artisans</a></li>
+    <li><a onclick="showPage('home');setTimeout(()=>document.getElementById('shop').scrollIntoView({behavior:'smooth'}),100)">Shop</a></li>
+    <li><a onclick="showPage('home');setTimeout(()=>document.getElementById('artisans').scrollIntoView({behavior:'smooth'}),100)">Artisans</a></li>
     <li><a onclick="showPage('contact')">Contact</a></li>
   </ul>
   <button class="cart-btn" onclick="showToast('Your cart is empty. Start shopping!')">
-    🛒 Cart <span class="cart-count" id="cartCount">0</span>
+    Cart <span class="cart-count" id="cartCount">0</span>
   </button>
 </nav>
 
-<!-- ═══════════════ HOME PAGE ═══════════════ -->
+<!-- ══════════ HOME PAGE ══════════ -->
 <div class="page active" id="page-home">
-
 <section class="hero" id="hero">
   <canvas class="pollen-canvas" id="pollenCanvas"></canvas>
   <div class="hills">
@@ -257,12 +303,12 @@
   </div>
   <div class="grass-layer" id="grassLayer"></div>
   <div class="pixel-char-wrap" id="charWrap">
-    <div class="speech-bubble">Handcrafting just for you! ✨</div>
+    <div class="speech-bubble">Handcrafting just for you!</div>
     <canvas class="pixel-canvas" id="pixelCanvas" width="96" height="96" style="width:96px;height:96px;"></canvas>
   </div>
   <div class="hero-content">
     <div class="hero-text">
-      <div class="hero-badge">✦ 100% Handmade · Direct from Artisans</div>
+      <div class="hero-badge">100% Handmade · Direct from Artisans</div>
       <h1 class="hero-heading">
         <span class="line"><span>Crafted</span></span>
         <span class="line"><span>with Soul.</span></span>
@@ -275,23 +321,21 @@
   </div>
 </section>
 
-<!-- CATEGORIES -->
 <section class="categories-section reveal" id="categories">
   <div class="section-label">Browse by craft</div>
   <h2 class="section-heading">What are you looking for?</h2>
   <p class="section-sub">From wheel-thrown pottery to hand-loomed textiles — every piece tells a story.</p>
   <div class="cat-grid" id="catGrid">
     <button class="cat-pill active" onclick="filterCat(this,'all')">All Crafts</button>
-    <button class="cat-pill" onclick="filterCat(this,'pottery')">🏺 Pottery</button>
-    <button class="cat-pill" onclick="filterCat(this,'weaving')">🧵 Weaving</button>
-    <button class="cat-pill" onclick="filterCat(this,'woodwork')">🪵 Woodwork</button>
-    <button class="cat-pill" onclick="filterCat(this,'macrame')">🪢 Macramé</button>
-    <button class="cat-pill" onclick="filterCat(this,'leather')">👜 Leather</button>
-    <button class="cat-pill" onclick="filterCat(this,'painting')">🖌️ Painting</button>
+    <button class="cat-pill" onclick="filterCat(this,'pottery')">Pottery</button>
+    <button class="cat-pill" onclick="filterCat(this,'weaving')">Weaving</button>
+    <button class="cat-pill" onclick="filterCat(this,'woodwork')">Woodwork</button>
+    <button class="cat-pill" onclick="filterCat(this,'macrame')">Macrame</button>
+    <button class="cat-pill" onclick="filterCat(this,'leather')">Leather</button>
+    <button class="cat-pill" onclick="filterCat(this,'painting')">Painting</button>
   </div>
 </section>
 
-<!-- PRODUCTS -->
 <section class="products-section" id="shop">
   <div class="section-label">Handpicked for you</div>
   <h2 class="section-heading reveal">The Market</h2>
@@ -299,7 +343,6 @@
   <div class="product-grid" id="productGrid"></div>
 </section>
 
-<!-- ARTISANS -->
 <section class="artisans-section" id="artisans">
   <div class="section-label">Meet the makers</div>
   <h2 class="section-heading reveal">Our Artisans</h2>
@@ -307,18 +350,16 @@
   <div class="artisan-strip" id="artisanStrip"></div>
 </section>
 
-<!-- STORY BANNER -->
 <div class="story-banner" id="stories">
   <div class="story-text">
     <div class="section-label">Our purpose</div>
     <h2 class="section-heading">Every purchase supports a family.</h2>
-    <p class="section-sub">Krafted connects you directly with independent artisans — no middlemen, fair prices, real impact. When you buy a pot from Ravi in Khurja, that money feeds his family and funds the next piece.</p>
+    <p class="section-sub">Krafted connects you directly with independent artisans — no middlemen, fair prices, real impact.</p>
     <button class="story-cta" onclick="showPage('contact')">Get in Touch →</button>
   </div>
-  <div class="story-art">🏺</div>
+  <div class="story-art">&#9670;</div>
 </div>
 
-<!-- FOOTER -->
 <footer>
   <div class="footer-grid">
     <div>
@@ -327,13 +368,7 @@
     </div>
     <div class="footer-col">
       <h4>Shop</h4>
-      <ul>
-        <li><a href="#">Pottery</a></li>
-        <li><a href="#">Weaving</a></li>
-        <li><a href="#">Woodwork</a></li>
-        <li><a href="#">Macramé</a></li>
-        <li><a href="#">Leather Goods</a></li>
-      </ul>
+      <ul><li><a href="#">Pottery</a></li><li><a href="#">Weaving</a></li><li><a href="#">Woodwork</a></li><li><a href="#">Macrame</a></li><li><a href="#">Leather Goods</a></li></ul>
     </div>
     <div class="footer-col">
       <h4>Stay in the loop</h4>
@@ -346,385 +381,762 @@
   </div>
   <div class="footer-bottom">
     <p>© 2025 Krafted. All pieces are one-of-a-kind.</p>
-    <p>Made with ❤️ for artisans of India</p>
+    <p>Made with care for artisans of India</p>
   </div>
 </footer>
+</div>
 
-</div><!-- end home page -->
+<!-- ══════════ PRODUCT DETAIL PAGE ══════════ -->
+<div class="page" id="page-product">
+<div class="pdp">
+  <div class="pdp-breadcrumb">
+    <span onclick="showPage('home')">Home</span>
+    <span class="sep">/</span>
+    <span onclick="showPage('home');setTimeout(()=>document.getElementById('shop').scrollIntoView({behavior:'smooth'}),100)">Shop</span>
+    <span class="sep">/</span>
+    <span id="pdpBreadName" style="color:var(--ink);">Product</span>
+  </div>
 
-<!-- ═══════════════ CONTACT PAGE ═══════════════ -->
+  <div class="pdp-split">
+    <!-- LEFT VISUAL -->
+    <div class="pdp-visual">
+      <div class="pdp-canvas-wrap">
+        <div class="pdp-bg-layer" id="pdpBgLayer"></div>
+        <div class="pdp-art-canvas">
+          <!-- floating product art -->
+          <div class="pdp-product-art" id="pdpProductArt">
+            <div class="pdp-product-glow" id="pdpGlow"></div>
+            <canvas id="pdpArtCanvas" width="180" height="180" style="image-rendering:pixelated;width:180px;height:180px;position:relative;z-index:1;border-radius:16px;"></canvas>
+          </div>
+          <!-- pixel inspector character -->
+          <div class="pdp-pixel-wrap" id="pdpCharWrap">
+            <div class="pdp-bubble" id="pdpBubble">Inspecting for you...</div>
+            <canvas class="pdp-pixel-canvas" id="pdpPixelCanvas" width="80" height="80" style="width:80px;height:80px;"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="pdp-stat-ticker">
+        <div class="pdp-ticker-item"><span class="pdp-ticker-dot"></span>Handmade-to-order</div>
+        <div class="pdp-ticker-item"><span class="pdp-ticker-dot" style="background:var(--pink)"></span>Ships in 3–5 days</div>
+        <div class="pdp-ticker-item"><span class="pdp-ticker-dot" style="background:var(--blue)"></span>Quality guaranteed</div>
+        <div class="pdp-ticker-item"><span class="pdp-ticker-dot" style="background:var(--purple)"></span>1-of-a-kind piece</div>
+      </div>
+    </div>
+
+    <!-- RIGHT INFO -->
+    <div class="pdp-info">
+      <div class="pdp-cat-tag" id="pdpCatTag">Craft</div>
+      <h1 class="pdp-title" id="pdpTitle">Product Name</h1>
+
+      <div class="pdp-artisan-row">
+        <div class="pdp-artisan-dot" id="pdpArtisanDot"></div>
+        <div class="pdp-artisan-meta">
+          <div class="pdp-artisan-name" id="pdpArtisanName"></div>
+          <div class="pdp-artisan-loc" id="pdpArtisanLoc"></div>
+        </div>
+      </div>
+
+      <div class="pdp-price-row">
+        <span class="pdp-price" id="pdpPrice"></span>
+        <span class="pdp-original" id="pdpOriginal"></span>
+        <span class="pdp-badge" id="pdpDiscount" style="display:none"></span>
+      </div>
+
+      <p class="pdp-desc" id="pdpDesc"></p>
+
+      <div class="pdp-materials" id="pdpMaterials"></div>
+
+      <div class="pdp-accordion" id="pdpAccordion">
+        <div class="pdp-acc-item">
+          <button class="pdp-acc-head" onclick="toggleAcc(this)">Dimensions & Weight <span class="pdp-acc-arrow">&#9654;</span></button>
+          <div class="pdp-acc-body"><p id="pdpDimensions"></p></div>
+        </div>
+        <div class="pdp-acc-item">
+          <button class="pdp-acc-head" onclick="toggleAcc(this)">Care Instructions <span class="pdp-acc-arrow">&#9654;</span></button>
+          <div class="pdp-acc-body"><ul id="pdpCare"></ul></div>
+        </div>
+        <div class="pdp-acc-item">
+          <button class="pdp-acc-head" onclick="toggleAcc(this)">Shipping & Returns <span class="pdp-acc-arrow">&#9654;</span></button>
+          <div class="pdp-acc-body"><p>Ships within 3–5 business days from the artisan's workshop. Standard delivery 7–14 days pan-India. Express available. Returns accepted within 7 days if item arrives damaged.</p></div>
+        </div>
+      </div>
+
+      <div class="pdp-purchase">
+        <div class="pdp-qty-label">Quantity</div>
+        <div class="pdp-qty-row">
+          <button class="pdp-qty-btn" onclick="changeQty(-1)">−</button>
+          <div class="pdp-qty-num" id="pdpQtyNum">1</div>
+          <button class="pdp-qty-btn" onclick="changeQty(1)">+</button>
+        </div>
+        <div class="pdp-cta-row">
+          <button class="pdp-cta-cart" onclick="pdpAddCart()">Add to Cart</button>
+          <button class="pdp-cta-order" onclick="pdpOrder()">Order Now →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ARTISAN STORY -->
+  <div class="pdp-artisan-story">
+    <div class="pdp-story-text">
+      <h3 id="pdpStoryName">About the Artisan</h3>
+      <p id="pdpStoryText"></p>
+      <div class="pdp-story-stats">
+        <div class="pdp-story-stat">
+          <div class="pdp-stat-num" id="pdpYears">—</div>
+          <div class="pdp-stat-label">Years of Craft</div>
+        </div>
+        <div class="pdp-story-stat">
+          <div class="pdp-stat-num" id="pdpPieces">—</div>
+          <div class="pdp-stat-label">Pieces Made</div>
+        </div>
+        <div class="pdp-story-stat">
+          <div class="pdp-stat-num" id="pdpRating">—</div>
+          <div class="pdp-stat-label">Avg Rating</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RELATED -->
+  <div class="pdp-related">
+    <h3>You may also like</h3>
+    <div class="pdp-related-grid" id="pdpRelatedGrid"></div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════ CONTACT PAGE ══════════ -->
 <div class="page" id="page-contact">
-
 <div class="contact-page">
   <div class="contact-hero">
     <h1>Place an Order</h1>
     <p>Tell us what you're looking for and we'll connect you directly with the right artisan.</p>
   </div>
-
   <div class="contact-body">
-    <!-- LEFT INFO -->
     <div class="contact-info">
       <h3>Why order through us?</h3>
       <p>Every order goes directly to the artisan. We handle coordination, quality checks, and delivery so you don't have to.</p>
-      <div class="info-item">
-        <div class="info-icon pink">📦</div>
-        <div class="info-text">
-          <strong>Delivery</strong>
-          <span>Pan-India shipping · 7–14 business days</span>
-        </div>
-      </div>
-      <div class="info-item">
-        <div class="info-icon teal">🎨</div>
-        <div class="info-text">
-          <strong>Custom Orders</strong>
-          <span>Personalised pieces available on request</span>
-        </div>
-      </div>
-      <div class="info-item">
-        <div class="info-icon blue">💬</div>
-        <div class="info-text">
-          <strong>Support</strong>
-          <span>hello@krafted.in · replies within 24h</span>
-        </div>
-      </div>
-      <div class="info-item">
-        <div class="info-icon pink">💳</div>
-        <div class="info-text">
-          <strong>Payment</strong>
-          <span>UPI · Cards · Net Banking · COD available</span>
-        </div>
-      </div>
-      <div style="margin-top:2rem;padding:1.2rem;background:rgba(103,159,158,0.08);border-radius:14px;border:1px solid rgba(103,159,158,0.2);">
-        <p style="font-size:0.85rem;color:var(--muted);line-height:1.7;">✦ All pieces are handmade-to-order. Slight variations in colour and texture are part of the craft — not defects.</p>
-      </div>
+      <div class="info-item"><div class="info-icon pink">&#9632;</div><div class="info-text"><strong>Delivery</strong><span>Pan-India shipping · 7–14 business days</span></div></div>
+      <div class="info-item"><div class="info-icon teal">&#9632;</div><div class="info-text"><strong>Custom Orders</strong><span>Personalised pieces available on request</span></div></div>
+      <div class="info-item"><div class="info-icon blue">&#9632;</div><div class="info-text"><strong>Support</strong><span>hello@krafted.in · replies within 24h</span></div></div>
+      <div class="info-item"><div class="info-icon pink">&#9632;</div><div class="info-text"><strong>Payment</strong><span>UPI · Cards · Net Banking · COD available</span></div></div>
     </div>
-
-    <!-- RIGHT FORM -->
     <div class="order-form-wrap">
       <h3>Order Request</h3>
       <p class="form-sub">Fill this in and we'll confirm availability and pricing within 24 hours.</p>
-
       <div class="selected-product-banner" id="selectedBanner">
-        <span class="spb-emoji" id="bannerEmoji"></span>
         <div class="spb-text">
           <div class="spb-name" id="bannerName"></div>
           <div class="spb-price" id="bannerPrice"></div>
         </div>
-        <button class="spb-clear" onclick="clearSelectedProduct()">✕</button>
+        <button class="spb-clear" onclick="clearSelectedProduct()">&#10005;</button>
       </div>
-
       <div id="orderForm">
         <div class="form-row">
-          <div class="form-group">
-            <label>Your Name</label>
-            <input type="text" id="fname" placeholder="Arjun Sharma">
-          </div>
-          <div class="form-group">
-            <label>Phone / WhatsApp</label>
-            <input type="tel" id="fphone" placeholder="+91 98765 43210">
-          </div>
+          <div class="form-group"><label>Your Name</label><input type="text" id="fname" placeholder="Arjun Sharma"></div>
+          <div class="form-group"><label>Phone / WhatsApp</label><input type="tel" id="fphone" placeholder="+91 98765 43210"></div>
         </div>
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" id="femail" placeholder="arjun@email.com">
-        </div>
-        <div class="form-group">
-          <label>Product / Category</label>
+        <div class="form-group"><label>Email</label><input type="email" id="femail" placeholder="arjun@email.com"></div>
+        <div class="form-group"><label>Product / Category</label>
           <select id="fproduct">
             <option value="">Select a category or item...</option>
-            <option>Wheel-Thrown Terracotta Vase — ₹1,499</option>
-            <option>Hand-Loomed Ikat Throw Blanket — ₹2,899</option>
-            <option>Carved Sheesham Side Table — ₹7,499</option>
-            <option>Boho Macramé Wall Hanging — ₹1,199</option>
-            <option>Hand-Painted Blue Pottery Bowls — ₹999</option>
-            <option>Vegetable-Tanned Leather Journal — ₹1,799</option>
-            <option>Madhubani Art Canvas Panel — ₹3,500</option>
-            <option>Natural Bamboo Serving Tray — ₹850</option>
-            <option>Ajrakh Block Print Dupatta — ₹2,299</option>
+            <option>Wheel-Thrown Terracotta Vase — Rs.1,499</option>
+            <option>Hand-Loomed Ikat Throw Blanket — Rs.2,899</option>
+            <option>Carved Sheesham Side Table — Rs.7,499</option>
+            <option>Boho Macrame Wall Hanging — Rs.1,199</option>
+            <option>Hand-Painted Blue Pottery Bowls — Rs.999</option>
+            <option>Vegetable-Tanned Leather Journal — Rs.1,799</option>
+            <option>Madhubani Art Canvas Panel — Rs.3,500</option>
+            <option>Natural Bamboo Serving Tray — Rs.850</option>
+            <option>Ajrakh Block Print Dupatta — Rs.2,299</option>
             <option>Custom / Other (describe below)</option>
           </select>
         </div>
         <div class="form-row">
-          <div class="form-group">
-            <label>Quantity</label>
-            <input type="number" id="fqty" placeholder="1" min="1" value="1">
-          </div>
-          <div class="form-group">
-            <label>Preferred Delivery</label>
-            <select id="fdelivery">
-              <option>Standard (7–14 days)</option>
-              <option>Express (3–5 days, +₹200)</option>
-            </select>
-          </div>
+          <div class="form-group"><label>Quantity</label><input type="number" id="fqty" placeholder="1" min="1" value="1"></div>
+          <div class="form-group"><label>Preferred Delivery</label><select id="fdelivery"><option>Standard (7–14 days)</option><option>Express (3–5 days, +Rs.200)</option></select></div>
         </div>
-        <div class="form-group">
-          <label>Delivery Address</label>
-          <input type="text" id="faddress" placeholder="Flat / Street, City, State, PIN">
-        </div>
-        <div class="form-group">
-          <label>Special Instructions (optional)</label>
-          <textarea id="fnotes" placeholder="Custom size, colour preference, gift wrapping, message card..."></textarea>
-        </div>
-        <button class="submit-btn" onclick="submitOrder()">✦ Place Order Request</button>
+        <div class="form-group"><label>Delivery Address</label><input type="text" id="faddress" placeholder="Flat / Street, City, State, PIN"></div>
+        <div class="form-group"><label>Special Instructions (optional)</label><textarea id="fnotes" placeholder="Custom size, colour preference, gift wrapping, message card..."></textarea></div>
+        <button class="submit-btn" onclick="submitOrder()">Place Order Request</button>
       </div>
-
       <div class="success-msg" id="successMsg">
-        <div class="success-icon">🎉</div>
+        <div class="success-icon">&#10003;</div>
         <h4>Order request received!</h4>
-        <p>We'll reach out on your phone/email within 24 hours to confirm availability and share payment details. Thank you for supporting Indian artisans.</p>
+        <p>We'll reach out within 24 hours to confirm availability and share payment details. Thank you for supporting Indian artisans.</p>
         <button onclick="resetForm()" style="margin-top:1.5rem;background:var(--teal);color:white;border:none;padding:0.7rem 1.8rem;border-radius:2rem;font-family:'Lora',serif;cursor:pointer;font-size:0.9rem;">Place Another Order</button>
       </div>
     </div>
   </div>
 </div>
-
-<!-- FOOTER (contact page) -->
-<footer>
-  <div class="footer-bottom" style="border:none;padding-top:0;">
-    <p>© 2025 Krafted. All pieces are one-of-a-kind.</p>
-    <p style="cursor:pointer;color:rgba(255,255,255,0.5);" onclick="showPage('home')">← Back to Shop</p>
-  </div>
-</footer>
-
-</div><!-- end contact page -->
+<footer><div class="footer-bottom" style="border:none;padding-top:0;padding:1.5rem 5%;"><p>© 2025 Krafted. All pieces are one-of-a-kind.</p><p style="cursor:pointer;color:rgba(255,255,255,0.5);" onclick="showPage('home')">Back to Shop</p></div></footer>
+</div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// ─── PAGE ROUTER ──────────────────────────────
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + id).classList.add('active');
-  window.scrollTo(0, 0);
-  if(id === 'home') observeReveal();
+// ══════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════
+const products = [
+  {
+    id:0, name:"Wheel-Thrown Terracotta Vase", artisan:"Ravi Kumar", loc:"Khurja, Uttar Pradesh", price:1499, original:1999,
+    cat:"pottery", bg:"#E18298", icon:"V",
+    desc:"Thrown by hand on a traditional kick-wheel in Khurja — India's ceramics capital — this terracotta vase carries the subtle fingerprints of its maker. No two pieces are alike. The warm earth tone deepens with age, developing a natural patina that tells the story of its journey.",
+    materials:["Terracotta Clay","Natural Mineral Glaze","Wheel-Thrown","Kiln-Fired"],
+    dimensions:"Height: 28 cm · Diameter: 14 cm · Weight: 620g",
+    care:["Wipe with a damp cloth","Do not submerge in water","Keep away from direct heat","Occasional linseed oil rub enhances colour"],
+    story:"Ravi Kumar has been a potter in Khurja for over 22 years, learning the craft from his father and grandfather. He works on a kick-wheel each morning before sunrise, shaping each piece with the same patient rhythm his ancestors used.",
+    years:"22", pieces:"1,400+", rating:"4.9"
+  },
+  {
+    id:1, name:"Hand-Loomed Ikat Throw Blanket", artisan:"Meera Devi", loc:"Pochampally, Telangana", price:2899, original:3500,
+    cat:"weaving", bg:"#796C8C", icon:"W",
+    desc:"Woven on a pit loom using the ancient double-ikat technique, each thread of this blanket is individually resist-dyed before weaving begins. The process takes weeks. The result is a geometric pattern so precise it seems impossible to have been made by hand — yet unmistakably human in its warmth.",
+    materials:["100% Handspun Cotton","Natural Vegetable Dye","Double Ikat","Pit Loom Woven"],
+    dimensions:"160 cm x 120 cm · Weight: 480g",
+    care:["Hand wash in cold water","Do not wring — gently press water out","Dry flat in shade","Iron on low heat"],
+    story:"Meera Devi is one of fewer than 300 weavers in Pochampally still practicing the double-ikat technique. She learned from her mother at age nine and now teaches her own daughter, ensuring this UNESCO-recognised craft continues.",
+    years:"18", pieces:"600+", rating:"5.0"
+  },
+  {
+    id:2, name:"Carved Sheesham Side Table", artisan:"Dilip Singh", loc:"Saharanpur, Uttar Pradesh", price:7499, original:9000,
+    cat:"woodwork", bg:"#679F9E", icon:"T",
+    desc:"Cut from a single slab of Indian rosewood (sheesham), this side table is hand-carved with floral jali motifs that cast delicate shadow patterns when lit from above. The finish is pure beeswax — nothing synthetic. It will outlast every piece of flat-pack furniture you've ever owned.",
+    materials:["Sheesham (Indian Rosewood)","Hand-Carved Jali","Beeswax Finish","Mortise & Tenon Joinery"],
+    dimensions:"45 cm x 45 cm x 55 cm (H) · Weight: 4.2 kg",
+    care:["Dust with dry cloth","Re-wax every 6 months","Avoid direct sunlight for extended periods","Coaster recommended for wet glasses"],
+    story:"Dilip Singh runs a third-generation woodworking atelier in Saharanpur, the city that has supplied carved furniture to Mughal courts and Indian palaces. His tools are the same his grandfather used.",
+    years:"31", pieces:"320+", rating:"4.8"
+  },
+  {
+    id:3, name:"Boho Macrame Wall Hanging", artisan:"Priya Nair", loc:"Kochi, Kerala", price:1199, original:null,
+    cat:"macrame", bg:"#7DADDB", icon:"M",
+    desc:"Knotted entirely by hand over three days using unbleached cotton rope, this wall piece breathes texture into any room. Each knot is tied to a specific tension — too loose and the pattern loses definition, too tight and the natural drape disappears. Priya has been tying these knots long enough to do it in her sleep.",
+    materials:["Unbleached Cotton Rope","Driftwood Dowel","Natural Undyed","Macrame Knot Work"],
+    dimensions:"Width: 60 cm · Length: 90 cm (including fringe) · Weight: 340g",
+    care:["Shake gently to remove dust","Spot clean with damp cloth","Avoid humid environments","Re-shape fringe when dry"],
+    story:"Priya Nair left a corporate career in Bangalore to return to Kerala and revive her grandmother's fibre art practice. She now runs workshops for women artisans in Kochi and ships her work internationally.",
+    years:"8", pieces:"900+", rating:"4.9"
+  },
+  {
+    id:4, name:"Hand-Painted Blue Pottery Bowls", artisan:"Anwar Shah", loc:"Jaipur, Rajasthan", price:999, original:1400,
+    cat:"pottery", bg:"#E18298", icon:"B",
+    desc:"Jaipur's blue pottery tradition dates to the 14th century. These bowls are made from a paste of quartz stone, glass powder and Multani mitti — no clay. Each is hand-painted with cobalt and turquoise before a single firing. The result is a surface that seems to hold light inside it.",
+    materials:["Quartz Stone Paste","Glass Powder","Multani Mitti","Cobalt & Turquoise Glaze"],
+    dimensions:"Diameter: 14 cm · Height: 6 cm each · Set of 3",
+    care:["Hand wash only","No microwave","No direct flame","Dry upside down"],
+    story:"Anwar Shah is a master blue pottery artisan whose family has practiced this craft in Jaipur's old city for six generations. He works seven days a week, refusing commissions he cannot execute to the standard his grandfather set.",
+    years:"27", pieces:"5,000+", rating:"4.9"
+  },
+  {
+    id:5, name:"Vegetable-Tanned Leather Journal", artisan:"Suresh Babu", loc:"Dharavi, Maharashtra", price:1799, original:null,
+    cat:"leather", bg:"#796C8C", icon:"J",
+    desc:"Tanned over eight weeks in a pit of organic tannins — pomegranate rind, myrobalan, and mimosa bark — this leather is unlike anything produced by a factory. It breathes, it ages, it develops a patina unique to its owner. The inside is filled with 200 pages of unbleached acid-free paper.",
+    materials:["Vegetable-Tanned Buffalo Leather","Hand-Stitched Binding","Brass Clasp","Acid-Free Unbleached Paper"],
+    dimensions:"21 cm x 15 cm x 2.5 cm · 200 pages · Weight: 480g",
+    care:["Apply leather conditioner every 3 months","Keep away from water","Store flat or upright","Develops patina naturally over time"],
+    story:"Suresh Babu runs a small leather atelier in Dharavi, one of Asia's largest informal economies. He sources all materials locally and uses zero synthetic chemicals in his tanning process — a rarity in modern leather production.",
+    years:"15", pieces:"2,200+", rating:"4.8"
+  },
+  {
+    id:6, name:"Madhubani Art Canvas Panel", artisan:"Sunita Paswan", loc:"Madhubani, Bihar", price:3500, original:4200,
+    cat:"painting", bg:"#679F9E", icon:"P",
+    desc:"Madhubani painting originated in Bihar over 2,500 years ago, used to decorate the walls of homes during festivals. Sunita works on handmade cloth canvas with brushes made from bamboo and hair. Every line is drawn freehand — the geometry is in her hands, not in any tool.",
+    materials:["Handmade Cloth Canvas","Natural Mineral Pigments","Bamboo-Hair Brush","Acacia Gum Binder"],
+    dimensions:"60 cm x 45 cm · Framed weight: 580g",
+    care:["Keep away from direct sunlight","Dust with soft dry brush","Do not wipe with wet cloth","Frame under UV-protective glass"],
+    story:"Sunita Paswan is a Padma Shri recipient whose Madhubani work has been exhibited in Tokyo, Berlin and New York. She still paints in the same room where her mother taught her — a small house in Ranti village, Madhubani district.",
+    years:"35", pieces:"800+", rating:"5.0"
+  },
+  {
+    id:7, name:"Natural Bamboo Serving Tray", artisan:"Ratan Das", loc:"Agartala, Tripura", price:850, original:null,
+    cat:"woodwork", bg:"#7DADDB", icon:"R",
+    desc:"Handwoven from locally harvested bamboo in the hills of Tripura, this tray uses a traditional hexagonal weave pattern that makes it both rigid and slightly flexible. It will not warp, crack or splinter under normal use. Light enough to carry one-handed, strong enough to hold a full tea service.",
+    materials:["Tripura Hill Bamboo","Hexagonal Weave","Natural Lacquer","Hand-Lashed Rim"],
+    dimensions:"45 cm x 32 cm x 6 cm (with handles) · Weight: 280g",
+    care:["Wipe with dry cloth","Occasional teak oil application","Do not soak in water","Store in dry place"],
+    story:"Ratan Das is a tribal artisan from the Tripuri community whose bamboo weaving tradition stretches back centuries. He harvests his own bamboo from the community forest and processes it entirely by hand.",
+    years:"19", pieces:"1,800+", rating:"4.7"
+  },
+  {
+    id:8, name:"Ajrakh Block Print Dupatta", artisan:"Ibrahim Khatri", loc:"Kutch, Gujarat", price:2299, original:2800,
+    cat:"weaving", bg:"#E6D4BE", icon:"D",
+    desc:"Ajrakh is one of the world's oldest resist-printing traditions. This dupatta passes through 16 stages — soaking, printing, drying, washing — over seven days. The geometric patterns are drawn from ancient cosmological maps. The indigo and madder dyes are extracted from plants Ibrahim grows himself.",
+    materials:["Handspun Kala Cotton","Natural Indigo Dye","Madder Root","Hand-Carved Teak Blocks"],
+    dimensions:"220 cm x 100 cm · Weight: 190g",
+    care:["First wash: separately in cold water","Hand wash with mild soap","Dry in shade","The colours deepen with each wash"],
+    story:"Ibrahim Khatri is the fifth generation of the Khatri family of Ajrakh masters in Kutch. After the 2001 earthquake destroyed his workshop, he rebuilt it entirely and trained 40 young artisans in the traditional process.",
+    years:"28", pieces:"3,000+", rating:"5.0"
+  }
+];
+
+const artisans = [
+  {name:"Ravi Kumar",loc:"Khurja, UP",specialty:"Terracotta Pottery",icon:"R",stars:5},
+  {name:"Meera Devi",loc:"Pochampally, TS",specialty:"Ikat Weaving",icon:"M",stars:5},
+  {name:"Dilip Singh",loc:"Saharanpur, UP",specialty:"Wood Carving",icon:"D",stars:4},
+  {name:"Priya Nair",loc:"Kochi, KL",specialty:"Macrame & Fibre Art",icon:"P",stars:5},
+  {name:"Anwar Shah",loc:"Jaipur, RJ",specialty:"Blue Pottery",icon:"A",stars:4},
+  {name:"Suresh Babu",loc:"Dharavi, MH",specialty:"Leather Craft",icon:"S",stars:5},
+  {name:"Sunita Paswan",loc:"Madhubani, BR",specialty:"Madhubani Painting",icon:"Su",stars:5},
+];
+
+function fmt(n){return 'Rs.'+n.toLocaleString('en-IN');}
+
+// ══════════════════════════════════════════
+// PAGE ROUTER
+// ══════════════════════════════════════════
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  window.scrollTo(0,0);
+  if(id==='home') observeReveal();
 }
 
-// ─── DATA ─────────────────────────────────────
-const products = [
-  {name:"Wheel-Thrown Terracotta Vase",artisan:"Ravi Kumar",loc:"Khurja, UP 🇮🇳",price:1499,original:1999,emoji:"🏺",cat:"pottery",bg:"#E18298"},
-  {name:"Hand-Loomed Ikat Throw Blanket",artisan:"Meera Devi",loc:"Pochampally, TS 🇮🇳",price:2899,original:3500,emoji:"🧶",cat:"weaving",bg:"#796C8C"},
-  {name:"Carved Sheesham Side Table",artisan:"Dilip Singh",loc:"Saharanpur, UP 🇮🇳",price:7499,original:9000,emoji:"🪵",cat:"woodwork",bg:"#679F9E"},
-  {name:"Boho Macramé Wall Hanging",artisan:"Priya Nair",loc:"Kochi, KL 🇮🇳",price:1199,original:null,emoji:"🪢",cat:"macrame",bg:"#7DADDB"},
-  {name:"Hand-Painted Blue Pottery Bowls",artisan:"Anwar Shah",loc:"Jaipur, RJ 🇮🇳",price:999,original:1400,emoji:"🫙",cat:"pottery",bg:"#E18298"},
-  {name:"Vegetable-Tanned Leather Journal",artisan:"Suresh Babu",loc:"Dharavi, MH 🇮🇳",price:1799,original:null,emoji:"📒",cat:"leather",bg:"#796C8C"},
-  {name:"Madhubani Art Canvas Panel",artisan:"Sunita Paswan",loc:"Madhubani, BR 🇮🇳",price:3500,original:4200,emoji:"🖼️",cat:"painting",bg:"#679F9E"},
-  {name:"Natural Bamboo Serving Tray",artisan:"Ratan Das",loc:"Agartala, TR 🇮🇳",price:850,original:null,emoji:"🎋",cat:"woodwork",bg:"#7DADDB"},
-  {name:"Ajrakh Block Print Dupatta",artisan:"Ibrahim Khatri",loc:"Kutch, GJ 🇮🇳",price:2299,original:2800,emoji:"🧣",cat:"weaving",bg:"#E6D4BE"},
-];
-const artisans = [
-  {name:"Ravi Kumar",loc:"Khurja, UP",specialty:"Terracotta Pottery",emoji:"🧑‍🎨",stars:5},
-  {name:"Meera Devi",loc:"Pochampally, TS",specialty:"Ikat Weaving",emoji:"👩‍🎨",stars:5},
-  {name:"Dilip Singh",loc:"Saharanpur, UP",specialty:"Wood Carving",emoji:"🧑‍🔧",stars:4},
-  {name:"Priya Nair",loc:"Kochi, KL",specialty:"Macramé & Fibre Art",emoji:"👩‍🔧",stars:5},
-  {name:"Anwar Shah",loc:"Jaipur, RJ",specialty:"Blue Pottery",emoji:"🧑‍🎨",stars:4},
-  {name:"Suresh Babu",loc:"Dharavi, MH",specialty:"Leather Craft",emoji:"👨‍🎨",stars:5},
-  {name:"Sunita Paswan",loc:"Madhubani, BR",specialty:"Madhubani Painting",emoji:"👩‍🎨",stars:5},
-];
+// ══════════════════════════════════════════
+// PRODUCT DETAIL PAGE
+// ══════════════════════════════════════════
+let currentProduct = null;
+let pdpQty = 1;
 
-function fmt(n) { return '₹' + n.toLocaleString('en-IN'); }
+function openProduct(id){
+  const p = products[id];
+  currentProduct = p;
+  pdpQty = 1;
+  document.getElementById('pdpQtyNum').textContent = 1;
 
-// ─── CART ──────────────────────────────────────
+  // breadcrumb & meta
+  document.getElementById('pdpBreadName').textContent = p.name;
+  document.getElementById('pdpCatTag').textContent = p.cat.charAt(0).toUpperCase()+p.cat.slice(1);
+  document.getElementById('pdpTitle').textContent = p.name;
+
+  // artisan
+  const dot = document.getElementById('pdpArtisanDot');
+  dot.textContent = p.artisan.charAt(0);
+  dot.style.background = p.bg + '22';
+  dot.style.borderColor = p.bg;
+  document.getElementById('pdpArtisanName').textContent = p.artisan;
+  document.getElementById('pdpArtisanLoc').textContent = p.loc;
+
+  // price
+  document.getElementById('pdpPrice').textContent = fmt(p.price);
+  const orig = document.getElementById('pdpOriginal');
+  const disc = document.getElementById('pdpDiscount');
+  if(p.original){
+    orig.textContent = fmt(p.original);
+    const pct = Math.round((1-p.price/p.original)*100);
+    disc.textContent = pct+'% off';
+    disc.style.display='inline-block';
+  } else {
+    orig.textContent='';
+    disc.style.display='none';
+  }
+
+  // desc
+  document.getElementById('pdpDesc').textContent = p.desc;
+
+  // materials
+  const matEl = document.getElementById('pdpMaterials');
+  matEl.innerHTML = p.materials.map(m=>'<span class="pdp-mat-tag">'+m+'</span>').join('');
+
+  // accordion
+  document.getElementById('pdpDimensions').textContent = p.dimensions;
+  const careEl = document.getElementById('pdpCare');
+  careEl.innerHTML = p.care.map(c=>'<li>'+c+'</li>').join('');
+
+  // bg layer
+  document.getElementById('pdpBgLayer').style.background =
+    'linear-gradient(135deg, '+p.bg+'18 0%, '+p.bg+'08 100%)';
+  document.getElementById('pdpGlow').style.background = p.bg;
+
+  // draw product art on canvas
+  drawProductArt(p);
+
+  // artisan story
+  document.getElementById('pdpStoryName').textContent = 'About '+p.artisan;
+  document.getElementById('pdpStoryText').textContent = p.story;
+  document.getElementById('pdpYears').textContent = p.years;
+  document.getElementById('pdpPieces').textContent = p.pieces;
+  document.getElementById('pdpRating').textContent = p.rating;
+
+  // related
+  const related = products.filter(x=>x.id!==id).sort(()=>Math.random()-0.5).slice(0,3);
+  document.getElementById('pdpRelatedGrid').innerHTML = related.map(r=>
+    '<div class="product-card" onclick="openProduct('+r.id+')" style="cursor:pointer;">' +
+    '<div class="product-img" style="background:'+r.bg+'18;"><canvas id="relArt'+r.id+'" width="60" height="60" style="image-rendering:pixelated;width:60px;height:60px;"></canvas></div>' +
+    '<div class="product-body" style="padding-bottom:1rem;">' +
+    '<div class="artisan-tag">'+r.artisan+'</div>' +
+    '<div class="product-name">'+r.name+'</div>' +
+    '<div class="product-price">'+fmt(r.price)+'</div>' +
+    '</div></div>'
+  ).join('');
+
+  // draw small related art
+  setTimeout(()=>{
+    related.forEach(r=>{
+      const c = document.getElementById('relArt'+r.id);
+      if(c) drawMiniArt(c, r);
+    });
+  }, 50);
+
+  // reset accordions
+  document.querySelectorAll('.pdp-acc-item').forEach(i=>i.classList.remove('open'));
+
+  // update bubble
+  const bubbles = [
+    'Looking good quality!', 'Checking every detail...', 'This one is special.',
+    'Finest craft I\'ve seen!', 'Worth every rupee.'
+  ];
+  document.getElementById('pdpBubble').textContent = bubbles[Math.floor(Math.random()*bubbles.length)];
+
+  showPage('product');
+  initPdpPixelChar();
+}
+
+// ── Draw large product art ──
+function drawProductArt(p){
+  const c = document.getElementById('pdpArtCanvas');
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0,0,180,180);
+  const col = p.bg;
+  ctx.fillStyle = col+'22';
+  ctx.roundRect(0,0,180,180,20);
+  ctx.fill();
+  // icon letter
+  ctx.fillStyle = col;
+  ctx.font = 'bold 80px serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(p.icon, 90, 90);
+  // decorative dots
+  for(let i=0;i<12;i++){
+    const angle = (i/12)*Math.PI*2;
+    const x = 90 + Math.cos(angle)*70;
+    const y = 90 + Math.sin(angle)*70;
+    ctx.beginPath();
+    ctx.arc(x,y,3,0,Math.PI*2);
+    ctx.fillStyle = col+'55';
+    ctx.fill();
+  }
+}
+
+function drawMiniArt(c, p){
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0,0,60,60);
+  ctx.fillStyle = p.bg+'22';
+  ctx.fillRect(0,0,60,60);
+  ctx.fillStyle = p.bg;
+  ctx.font = 'bold 28px serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(p.icon, 30, 30);
+}
+
+// ── Accordion ──
+function toggleAcc(btn){
+  const item = btn.closest('.pdp-acc-item');
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.pdp-acc-item').forEach(i=>i.classList.remove('open'));
+  if(!wasOpen) item.classList.add('open');
+}
+
+// ── Quantity ──
+function changeQty(delta){
+  pdpQty = Math.max(1, pdpQty+delta);
+  document.getElementById('pdpQtyNum').textContent = pdpQty;
+}
+
+// ── PDP actions ──
+function pdpAddCart(){
+  if(!currentProduct) return;
+  cartTotal += pdpQty;
+  document.getElementById('cartCount').textContent = cartTotal;
+  showToast('Added '+pdpQty+'x "'+currentProduct.name+'" to cart');
+}
+function pdpOrder(){
+  if(!currentProduct) return;
+  orderProduct(currentProduct.name, currentProduct.price);
+}
+
+// ══════════════════════════════════════════
+// CART & TOAST
+// ══════════════════════════════════════════
 let cartTotal = 0;
-function addToCart(name, price) {
+function addToCart(name, price){
   cartTotal++;
   document.getElementById('cartCount').textContent = cartTotal;
-  showToast('Added "' + name + '" — ' + fmt(price));
+  showToast('Added "'+name+'" — '+fmt(price));
 }
-
-// ─── ORDER REDIRECT ────────────────────────────
-function orderProduct(name, price, emoji) {
-  showPage('contact');
-  setTimeout(() => {
-    const sel = document.getElementById('fproduct');
-    for(let i = 0; i < sel.options.length; i++) {
-      if(sel.options[i].text.startsWith(name.substring(0,20))) { sel.selectedIndex = i; break; }
-    }
-    document.getElementById('bannerEmoji').textContent = emoji;
-    document.getElementById('bannerName').textContent = name;
-    document.getElementById('bannerPrice').textContent = fmt(price);
-    document.getElementById('selectedBanner').classList.add('show');
-  }, 100);
-}
-function clearSelectedProduct() {
-  document.getElementById('selectedBanner').classList.remove('show');
-  document.getElementById('fproduct').selectedIndex = 0;
-}
-
-// ─── TOAST ─────────────────────────────────────
 let toastTimer;
-function showToast(msg) {
+function showToast(msg){
   const t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+  toastTimer = setTimeout(()=>t.classList.remove('show'), 2800);
 }
 
-// ─── RENDER PRODUCTS ───────────────────────────
-function renderProducts(cat) {
-  cat = cat || 'all';
+// ══════════════════════════════════════════
+// RENDER HOME PRODUCTS
+// ══════════════════════════════════════════
+function renderProducts(cat){
+  cat = cat||'all';
   const grid = document.getElementById('productGrid');
-  const f = cat === 'all' ? products : products.filter(p => p.cat === cat);
-  grid.innerHTML = f.map(p =>
-    '<div class="product-card reveal">' +
-      '<div class="product-img" style="background:' + p.bg + '22;">' +
-        '<div class="product-img-bg" style="background:' + p.bg + ';border-radius:20px 20px 0 0;"></div>' +
-        '<span class="product-emoji">' + p.emoji + '</span>' +
-      '</div>' +
-      '<div class="product-body">' +
-        '<div class="artisan-tag">✦ ' + p.artisan + ' · ' + p.loc + '</div>' +
-        '<div class="product-name">' + p.name + '</div>' +
-        '<div class="product-price">' + fmt(p.price) + (p.original ? '<span class="original">' + fmt(p.original) + '</span>' : '') + '</div>' +
-      '</div>' +
-      '<div class="card-actions">' +
-        '<button class="btn-cart" onclick="addToCart(\'' + p.name.replace(/'/g,"\\'") + '\',' + p.price + ')">🛒 Add to Cart</button>' +
-        '<button class="btn-order" onclick="orderProduct(\'' + p.name.replace(/'/g,"\\'") + '\',' + p.price + ',\'' + p.emoji + '\')">📦 Order Now</button>' +
-      '</div>' +
-    '</div>'
+  const f = cat==='all'?products:products.filter(p=>p.cat===cat);
+  grid.innerHTML = f.map(p=>
+    '<div class="product-card reveal" onclick="openProduct('+p.id+')">' +
+    '<div class="product-img" style="background:'+p.bg+'18;">' +
+    '<canvas id="homeArt'+p.id+'" width="80" height="80" style="image-rendering:pixelated;width:80px;height:80px;position:relative;z-index:1;"></canvas>' +
+    '</div>' +
+    '<div class="product-body">' +
+    '<div class="artisan-tag">'+p.artisan+' · '+p.loc.split(',')[0]+'</div>' +
+    '<div class="product-name">'+p.name+'</div>' +
+    '<div class="product-price">'+fmt(p.price)+(p.original?'<span class="original">'+fmt(p.original)+'</span>':'')+'</div>' +
+    '</div>' +
+    '<div class="card-actions">' +
+    '<button class="btn-view" onclick="event.stopPropagation();openProduct('+p.id+')">View Details</button>' +
+    '<button class="btn-order" onclick="event.stopPropagation();orderProduct(\''+p.name.replace(/'/g,"\\'")+'\','+p.price+')">Order Now</button>' +
+    '</div></div>'
   ).join('');
+  // draw mini art on home cards
+  setTimeout(()=>{
+    f.forEach(p=>{
+      const c = document.getElementById('homeArt'+p.id);
+      if(c) drawMiniArt(c, p);
+    });
+  }, 50);
   observeReveal();
 }
 
-// ─── FILTER ────────────────────────────────────
-function filterCat(btn, cat) {
-  document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+function filterCat(btn, cat){
+  document.querySelectorAll('.cat-pill').forEach(p=>p.classList.remove('active'));
   btn.classList.add('active');
   renderProducts(cat);
 }
 
-// ─── ARTISANS ──────────────────────────────────
-function renderArtisans() {
-  document.getElementById('artisanStrip').innerHTML = artisans.map(a =>
+// ══════════════════════════════════════════
+// ARTISANS
+// ══════════════════════════════════════════
+function renderArtisans(){
+  document.getElementById('artisanStrip').innerHTML = artisans.map(a=>
     '<div class="artisan-card">' +
-      '<div class="artisan-avatar">' + a.emoji + '</div>' +
-      '<div class="artisan-name">' + a.name + '</div>' +
-      '<div class="artisan-loc">📍 ' + a.loc + '</div>' +
-      '<div class="artisan-specialty">' + a.specialty + '</div>' +
-      '<div class="stars">' + '★'.repeat(a.stars) + '☆'.repeat(5-a.stars) + '</div>' +
-      '<button class="view-btn" onclick="showToast(\'Opening ' + a.name.replace(/'/g,"\\'") + '\'s workshop...\')">View Workshop →</button>' +
+    '<div class="artisan-avatar" style="background:var(--cream);font-family:Playfair Display,serif;font-weight:700;font-size:1.2rem;color:var(--purple);">'+a.icon+'</div>' +
+    '<div class="artisan-name">'+a.name+'</div>' +
+    '<div class="artisan-loc">'+a.loc+'</div>' +
+    '<div class="artisan-specialty">'+a.specialty+'</div>' +
+    '<div class="stars">'+'&#9733;'.repeat(a.stars)+'&#9734;'.repeat(5-a.stars)+'</div>' +
+    '<button class="view-btn" onclick="showToast(\'Opening '+a.name.replace(/'/g,"\\'")+'\'s workshop...\')">View Workshop</button>' +
     '</div>'
   ).join('');
 }
 
-// ─── SCROLL REVEAL ─────────────────────────────
-function observeReveal() {
+// ══════════════════════════════════════════
+// SCROLL REVEAL
+// ══════════════════════════════════════════
+function observeReveal(){
   const els = document.querySelectorAll('.reveal:not(.visible)');
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach((e, i) => {
-      if(e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), i * 80); obs.unobserve(e.target); }
-    });
-  }, { threshold: 0.1 });
-  els.forEach(el => obs.observe(el));
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*80);obs.unobserve(e.target);}});
+  },{threshold:0.1});
+  els.forEach(el=>obs.observe(el));
 }
+window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',window.scrollY>60);});
 
-// ─── NAV SCROLL ────────────────────────────────
-window.addEventListener('scroll', () => {
-  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 60);
-});
-
-// ─── ORDER FORM ────────────────────────────────
-function submitOrder() {
-  const name = document.getElementById('fname').value.trim();
-  const phone = document.getElementById('fphone').value.trim();
-  const email = document.getElementById('femail').value.trim();
-  const product = document.getElementById('fproduct').value;
-  if(!name || !phone || !email || !product) {
-    showToast('Please fill in Name, Phone, Email and Product!');
-    return;
-  }
-  document.getElementById('orderForm').style.display = 'none';
-  document.getElementById('successMsg').style.display = 'block';
+// ══════════════════════════════════════════
+// ORDER FORM
+// ══════════════════════════════════════════
+function orderProduct(name, price){
+  showPage('contact');
+  setTimeout(()=>{
+    const sel = document.getElementById('fproduct');
+    for(let i=0;i<sel.options.length;i++){if(sel.options[i].text.includes(name.substring(0,15))){sel.selectedIndex=i;break;}}
+    document.getElementById('bannerName').textContent = name;
+    document.getElementById('bannerPrice').textContent = fmt(price);
+    document.getElementById('selectedBanner').classList.add('show');
+  },100);
+}
+function clearSelectedProduct(){
+  document.getElementById('selectedBanner').classList.remove('show');
+  document.getElementById('fproduct').selectedIndex=0;
+}
+function submitOrder(){
+  const name=document.getElementById('fname').value.trim();
+  const phone=document.getElementById('fphone').value.trim();
+  const email=document.getElementById('femail').value.trim();
+  const product=document.getElementById('fproduct').value;
+  if(!name||!phone||!email||!product){showToast('Please fill in Name, Phone, Email and Product!');return;}
+  document.getElementById('orderForm').style.display='none';
+  document.getElementById('successMsg').style.display='block';
   document.getElementById('selectedBanner').classList.remove('show');
 }
-function resetForm() {
-  document.getElementById('orderForm').style.display = 'block';
-  document.getElementById('successMsg').style.display = 'none';
-  document.getElementById('fname').value = '';
-  document.getElementById('fphone').value = '';
-  document.getElementById('femail').value = '';
-  document.getElementById('fproduct').selectedIndex = 0;
-  document.getElementById('fqty').value = 1;
-  document.getElementById('faddress').value = '';
-  document.getElementById('fnotes').value = '';
+function resetForm(){
+  document.getElementById('orderForm').style.display='block';
+  document.getElementById('successMsg').style.display='none';
+  ['fname','fphone','femail','faddress','fnotes'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('fproduct').selectedIndex=0;
+  document.getElementById('fqty').value=1;
 }
 
-// ─── POLLEN PARTICLES ──────────────────────────
-function initPollen() {
-  const canvas = document.getElementById('pollenCanvas');
-  if(!canvas) return;
-  const ctx = canvas.getContext('2d');
-  let W, H, particles = [];
-  function resize() { W = canvas.width = canvas.offsetWidth; H = canvas.height = canvas.offsetHeight; }
-  resize();
-  window.addEventListener('resize', resize);
-  const colors = ['rgba(225,130,152,', 'rgba(125,173,219,', 'rgba(103,159,158,', 'rgba(230,212,190,'];
-  for(let i = 0; i < 60; i++) {
-    const c = colors[Math.floor(Math.random() * colors.length)];
-    particles.push({x:Math.random()*1600, y:Math.random()*900, r:Math.random()*2.5+0.5, vx:(Math.random()-0.5)*0.3, vy:-Math.random()*0.6-0.1, a:Math.random()*0.5+0.15, col:c});
-  }
-  function draw() {
-    ctx.clearRect(0, 0, W, H);
-    particles.forEach(p => {
-      ctx.beginPath(); ctx.arc(p.x % W, p.y, p.r, 0, Math.PI*2);
-      ctx.fillStyle = p.col + p.a + ')'; ctx.fill();
-      p.x += p.vx; p.y += p.vy;
-      if(p.y < -10) { p.y = H + 10; p.x = Math.random() * W; }
-    });
-    requestAnimationFrame(draw);
-  }
+// ══════════════════════════════════════════
+// POLLEN
+// ══════════════════════════════════════════
+function initPollen(){
+  const canvas=document.getElementById('pollenCanvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  let W,H,particles=[];
+  function resize(){W=canvas.width=canvas.offsetWidth;H=canvas.height=canvas.offsetHeight;}
+  resize();window.addEventListener('resize',resize);
+  const colors=['rgba(225,130,152,','rgba(125,173,219,','rgba(103,159,158,','rgba(230,212,190,'];
+  for(let i=0;i<60;i++){const c=colors[Math.floor(Math.random()*colors.length)];particles.push({x:Math.random()*1600,y:Math.random()*900,r:Math.random()*2.5+0.5,vx:(Math.random()-0.5)*0.3,vy:-Math.random()*0.6-0.1,a:Math.random()*0.5+0.15,col:c});}
+  function draw(){ctx.clearRect(0,0,W,H);particles.forEach(p=>{ctx.beginPath();ctx.arc(p.x%W,p.y,p.r,0,Math.PI*2);ctx.fillStyle=p.col+p.a+')';ctx.fill();p.x+=p.vx;p.y+=p.vy;if(p.y<-10){p.y=H+10;p.x=Math.random()*W;}});requestAnimationFrame(draw);}
   draw();
 }
 
-// ─── GRASS ─────────────────────────────────────
-function initGrass() {
-  const layer = document.getElementById('grassLayer');
-  if(!layer) return;
-  const colors = ['#5a7a7a', '#679F9E', '#4e8887', '#796C8C', '#5e5270'];
-  for(let i = 0; i < 90; i++) {
-    const b = document.createElement('div');
-    b.className = 'grass-blade';
-    const h = 40 + Math.random() * 80;
-    b.style.cssText = 'left:' + Math.random()*100 + '%;height:' + h + 'px;width:' + (2+Math.random()*3) + 'px;background:' + colors[Math.floor(Math.random()*colors.length)] + ';animation-duration:' + (1.8+Math.random()*2) + 's;animation-delay:-' + (Math.random()*3) + 's;opacity:' + (0.6+Math.random()*0.4) + ';';
-    layer.appendChild(b);
-  }
+// ══════════════════════════════════════════
+// GRASS
+// ══════════════════════════════════════════
+function initGrass(){
+  const layer=document.getElementById('grassLayer');
+  if(!layer)return;
+  const colors=['#5a7a7a','#679F9E','#4e8887','#796C8C','#5e5270'];
+  for(let i=0;i<90;i++){const b=document.createElement('div');b.className='grass-blade';const h=40+Math.random()*80;b.style.cssText='left:'+Math.random()*100+'%;height:'+h+'px;width:'+(2+Math.random()*3)+'px;background:'+colors[Math.floor(Math.random()*colors.length)]+';animation-duration:'+(1.8+Math.random()*2)+'s;animation-delay:-'+(Math.random()*3)+'s;opacity:'+(0.6+Math.random()*0.4)+';';layer.appendChild(b);}
 }
 
-// ─── PIXEL CHARACTER ───────────────────────────
-function initPixelChar() {
-  const canvas = document.getElementById('pixelCanvas');
+// ══════════════════════════════════════════
+// PIXEL CHARACTER — HERO (weaver)
+// ══════════════════════════════════════════
+function initPixelChar(){
+  const canvas=document.getElementById('pixelCanvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  ctx.imageSmoothingEnabled=false;
+  const palette={S:'#f4c5a0',H:'#2c2040',C:'#E18298',B:'#796C8C',P:'#679F9E',_:'rgba(0,0,0,0)',W:'#E6D4BE',D:'#c9677d',T:'#4e8887'};
+  const f0=['_','_','_','_','H','H','H','H','_','_','_','_','_','_','_','H','H','H','H','H','H','_','_','_','_','_','_','H','S','S','S','S','H','_','_','_','_','_','_','H','S','S','S','S','H','_','_','_','_','_','_','_','S','S','S','S','_','_','_','_','_','C','C','C','C','C','C','C','C','C','C','_','_','C','C','C','C','C','C','C','C','C','C','_','S','_','C','C','C','C','C','C','C','C','_','S','_','_','_','P','P','P','P','P','P','_','_','_','_','_','_','P','W','W','W','W','P','_','_','_','_','_','_','P','P','P','P','P','P','_','_','_','_','_','_','T','T','T','T','T','T','_','_','_'];
+  const f1=['_','_','_','_','H','H','H','H','_','_','_','_','_','_','_','H','H','H','H','H','H','_','_','_','_','_','_','H','S','S','S','S','H','_','_','_','_','_','_','H','S','S','S','S','H','_','_','_','_','_','_','_','S','S','S','S','_','_','_','_','_','C','C','C','C','C','C','C','C','C','C','_','_','C','C','C','C','C','C','C','C','C','C','_','_','S','C','C','C','C','C','C','C','C','S','_','_','_','_','P','P','P','P','P','P','_','_','_','_','_','_','P','W','W','W','W','P','_','_','_','_','_','_','P','P','P','P','P','P','_','_','_','_','_','_','T','T','T','T','T','T','_','_','_'];
+  const f2=['_','_','_','_','H','H','H','H','_','_','_','_','_','_','_','H','H','H','H','H','H','_','_','_','_','_','_','H','S','S','S','S','H','_','_','_','_','_','_','H','S','S','S','S','H','_','_','_','_','_','_','_','S','S','S','S','_','_','_','_','S','_','C','C','C','C','C','C','C','C','_','S','_','C','C','C','C','C','C','C','C','C','C','_','_','_','C','C','C','C','C','C','C','C','_','_','_','_','_','P','P','P','P','P','P','_','_','_','_','_','_','P','W','W','W','W','P','_','_','_','_','_','_','P','P','P','P','P','P','_','_','_','_','_','_','T','T','T','T','T','T','_','_','_'];
+  const fw=['_','_','_','_','H','H','H','H','_','_','_','_','_','_','_','H','H','H','H','H','H','_','_','_','_','_','_','H','S','S','S','S','H','_','_','_','_','_','_','H','S','S','S','S','H','_','_','_','_','_','_','_','S','S','S','S','_','_','_','_','_','C','C','C','C','C','C','C','C','_','S','S','_','C','C','C','C','C','C','C','C','C','_','S','_','_','C','C','C','C','C','C','C','C','_','_','_','_','_','P','P','P','P','P','P','_','_','_','_','_','_','P','W','W','W','W','P','_','_','_','_','_','_','P','P','P','P','P','P','_','_','_','_','_','_','T','T','T','T','T','T','_','_','_'];
+  const frames=[f0,f1,f2];const SCALE=8,COLS=12;let frame=0,hovering=false,frameTimer=0;
+  function drawFrame(pixels){ctx.clearRect(0,0,96,96);pixels.forEach((c,i)=>{if(c==='_')return;ctx.fillStyle=palette[c]||'#000';ctx.fillRect((i%COLS)*SCALE,Math.floor(i/COLS)*SCALE,SCALE,SCALE);});}
+  function animate(ts){if(ts-frameTimer>220){frameTimer=ts;if(!hovering){frame=(frame+1)%frames.length;drawFrame(frames[frame]);}}requestAnimationFrame(animate);}
+  const wrap=document.getElementById('charWrap');
+  if(wrap){wrap.addEventListener('mouseenter',()=>{hovering=true;drawFrame(fw);});wrap.addEventListener('mouseleave',()=>{hovering=false;frame=0;});}
+  drawFrame(frames[0]);requestAnimationFrame(animate);
+}
+
+// ══════════════════════════════════════════
+// PIXEL CHARACTER — PDP (inspector/magnifier)
+// ══════════════════════════════════════════
+// Different character: standing, holding a magnifying glass, nodding
+function initPdpPixelChar(){
+  const canvas = document.getElementById('pdpPixelCanvas');
   if(!canvas) return;
   const ctx = canvas.getContext('2d');
   ctx.imageSmoothingEnabled = false;
-  // updated palette to match new colour scheme
-  const palette = {S:'#f4c5a0', H:'#2c2040', C:'#E18298', B:'#796C8C', P:'#679F9E', _:'rgba(0,0,0,0)', W:'#E6D4BE', D:'#c9677d', T:'#4e8887'};
-  const f0 = ['_','_','_','_','H','H','H','H','_','_','_','_','_','_','_','H','H','H','H','H','H','_','_','_','_','_','_','H','S','S','S','S','H','_','_','_','_','_','_','H','S','S','S','S','H','_','_','_','_','_','_','_','S','S','S','S','_','_','_','_','_','C','C','C','C','C','C','C','C','C','C','_','_','C','C','C','C','C','C','C','C','C','C','_','S','_','C','C','C','C','C','C','C','C','_','S','_','_','_','P','P','P','P','P','P','_','_','_','_','_','_','P','W','W','W','W','P','_','_','_','_','_','_','P','P','P','P','P','P','_','_','_','_','_','_','T','T','T','T','T','T','_','_','_'];
-  const f1 = ['_','_','_','_','H','H','H','H','_','_','_','_','_','_','_','H','H','H','H','H','H','_','_','_','_','_','_','H','S','S','S','S','H','_','_','_','_','_','_','H','S','S','S','S','H','_','_','_','_','_','_','_','S','S','S','S','_','_','_','_','_','C','C','C','C','C','C','C','C','C','C','_','_','C','C','C','C','C','C','C','C','C','C','_','_','S','C','C','C','C','C','C','C','C','S','_','_','_','_','P','P','P','P','P','P','_','_','_','_','_','_','P','W','W','W','W','P','_','_','_','_','_','_','P','P','P','P','P','P','_','_','_','_','_','_','T','T','T','T','T','T','_','_','_'];
-  const f2 = ['_','_','_','_','H','H','H','H','_','_','_','_','_','_','_','H','H','H','H','H','H','_','_','_','_','_','_','H','S','S','S','S','H','_','_','_','_','_','_','H','S','S','S','S','H','_','_','_','_','_','_','_','S','S','S','S','_','_','_','_','S','_','C','C','C','C','C','C','C','C','_','S','_','C','C','C','C','C','C','C','C','C','C','_','_','_','C','C','C','C','C','C','C','C','_','_','_','_','_','P','P','P','P','P','P','_','_','_','_','_','_','P','W','W','W','W','P','_','_','_','_','_','_','P','P','P','P','P','P','_','_','_','_','_','_','T','T','T','T','T','T','_','_','_'];
-  const fw = ['_','_','_','_','H','H','H','H','_','_','_','_','_','_','_','H','H','H','H','H','H','_','_','_','_','_','_','H','S','S','S','S','H','_','_','_','_','_','_','H','S','S','S','S','H','_','_','_','_','_','_','_','S','S','S','S','_','_','_','_','_','C','C','C','C','C','C','C','C','_','S','S','_','C','C','C','C','C','C','C','C','C','_','S','_','_','C','C','C','C','C','C','C','C','_','_','_','_','_','P','P','P','P','P','P','_','_','_','_','_','_','P','W','W','W','W','P','_','_','_','_','_','_','P','P','P','P','P','P','_','_','_','_','_','_','T','T','T','T','T','T','_','_','_'];
-  const frames = [f0, f1, f2];
-  const SCALE = 8, COLS = 12;
-  let frame = 0, hovering = false, frameTimer = 0;
-  function drawFrame(pixels) {
-    ctx.clearRect(0, 0, 96, 96);
-    pixels.forEach((c, i) => {
-      if(c === '_') return;
-      ctx.fillStyle = palette[c] || '#000';
-      ctx.fillRect((i % COLS) * SCALE, Math.floor(i / COLS) * SCALE, SCALE, SCALE);
+  const SCALE = 5, COLS = 16;
+  // palette: S=skin, H=hair/dark, C=clothes(teal), G=glass(blue), L=lens, _=empty, B=belt(purple), A=arm
+  const palette = {S:'#f4c5a0',H:'#2c2040',C:'#679F9E',G:'#7DADDB',L:'#c8e8f8',_:'rgba(0,0,0,0)',B:'#796C8C',A:'#f4c5a0',T:'#4e8887'};
+
+  // 16x16 inspector character frames
+  const f0 = [
+    '_','_','_','_','H','H','H','H','H','_','_','_','_','_','_','_',
+    '_','_','_','H','H','H','H','H','H','H','_','_','_','_','_','_',
+    '_','_','_','H','S','S','S','S','S','H','_','_','_','_','_','_',
+    '_','_','_','H','S','S','S','S','S','H','_','_','_','_','_','_',
+    '_','_','_','_','S','S','S','S','S','_','_','_','_','_','_','_',
+    '_','_','C','C','C','C','C','C','C','C','C','_','_','_','_','_',
+    '_','_','C','C','B','B','B','B','B','C','C','_','_','_','_','_',
+    '_','_','C','C','C','C','C','C','C','C','C','_','G','G','G','_',
+    '_','A','_','C','C','C','C','C','C','C','_','A','G','L','G','_',
+    '_','_','_','_','C','C','C','C','C','_','_','_','_','G','G','_',
+    '_','_','_','_','C','C','_','_','C','C','_','_','_','_','_','_',
+    '_','_','_','_','T','T','_','_','T','T','_','_','_','_','_','_',
+    '_','_','_','_','T','T','_','_','T','T','_','_','_','_','_','_',
+    '_','_','_','_','H','T','_','_','T','H','_','_','_','_','_','_',
+    '_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_',
+    '_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_',
+  ];
+  // frame 1 — arm raised holding glass higher
+  const f1 = [
+    '_','_','_','_','H','H','H','H','H','_','_','_','_','_','_','_',
+    '_','_','_','H','H','H','H','H','H','H','_','_','_','_','_','_',
+    '_','_','_','H','S','S','S','S','S','H','_','_','_','_','_','_',
+    '_','_','_','H','S','S','S','S','S','H','_','_','_','_','_','_',
+    '_','_','_','_','S','S','S','S','S','_','_','_','_','_','_','_',
+    '_','_','C','C','C','C','C','C','C','C','C','_','_','_','_','_',
+    '_','_','C','C','B','B','B','B','B','C','C','_','G','G','G','_',
+    '_','_','C','C','C','C','C','C','C','C','C','A','G','L','G','_',
+    '_','A','_','C','C','C','C','C','C','C','_','_','_','G','G','_',
+    '_','_','_','_','C','C','C','C','C','_','_','_','_','_','_','_',
+    '_','_','_','_','C','C','_','_','C','C','_','_','_','_','_','_',
+    '_','_','_','_','T','T','_','_','T','T','_','_','_','_','_','_',
+    '_','_','_','_','T','T','_','_','T','T','_','_','_','_','_','_',
+    '_','_','_','_','H','T','_','_','T','H','_','_','_','_','_','_',
+    '_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_',
+    '_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_',
+  ];
+  // frame 2 — nod (head slightly different)
+  const f2 = [
+    '_','_','_','_','_','H','H','H','H','H','_','_','_','_','_','_',
+    '_','_','_','_','H','H','H','H','H','H','H','_','_','_','_','_',
+    '_','_','_','_','H','S','S','S','S','S','H','_','_','_','_','_',
+    '_','_','_','_','H','S','S','S','S','S','H','_','_','_','_','_',
+    '_','_','_','_','_','S','S','S','S','S','_','_','_','_','_','_',
+    '_','_','C','C','C','C','C','C','C','C','C','_','_','_','_','_',
+    '_','_','C','C','B','B','B','B','B','C','C','_','_','_','_','_',
+    '_','_','C','C','C','C','C','C','C','C','C','_','G','G','G','_',
+    '_','A','_','C','C','C','C','C','C','C','_','A','G','L','G','_',
+    '_','_','_','_','C','C','C','C','C','_','_','_','_','G','G','_',
+    '_','_','_','_','C','C','_','_','C','C','_','_','_','_','_','_',
+    '_','_','_','_','T','T','_','_','T','T','_','_','_','_','_','_',
+    '_','_','_','_','T','T','_','_','T','T','_','_','_','_','_','_',
+    '_','_','_','_','H','T','_','_','T','H','_','_','_','_','_','_',
+    '_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_',
+    '_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_',
+  ];
+  const frames = [f0,f1,f2,f1];
+  let frame=0, hovering=false, frameTimer=0;
+  function drawFrame(pixels){
+    ctx.clearRect(0,0,80,80);
+    pixels.forEach((c,i)=>{
+      if(c==='_')return;
+      ctx.fillStyle=palette[c]||'#000';
+      ctx.fillRect((i%COLS)*SCALE, Math.floor(i/COLS)*SCALE, SCALE, SCALE);
     });
   }
-  function animate(ts) {
-    if(ts - frameTimer > 220) { frameTimer = ts; if(!hovering) { frame = (frame+1) % frames.length; drawFrame(frames[frame]); } }
+  function animate(ts){
+    if(ts-frameTimer>280){frameTimer=ts;if(!hovering){frame=(frame+1)%frames.length;drawFrame(frames[frame]);}}
     requestAnimationFrame(animate);
   }
-  const wrap = document.getElementById('charWrap');
-  if(wrap) {
-    wrap.addEventListener('mouseenter', () => { hovering = true; drawFrame(fw); });
-    wrap.addEventListener('mouseleave', () => { hovering = false; frame = 0; });
+  const wrap = document.getElementById('pdpCharWrap');
+  if(wrap){
+    wrap.addEventListener('mouseenter',()=>{hovering=true;const thumbsUp=[
+      '_','_','_','_','H','H','H','H','H','_','_','_','_','_','_','_',
+      '_','_','_','H','H','H','H','H','H','H','_','_','_','_','_','_',
+      '_','_','_','H','S','S','S','S','S','H','_','_','_','_','_','_',
+      '_','_','_','H','S','S','S','S','S','H','_','_','_','_','_','_',
+      '_','_','_','_','S','S','S','S','S','_','_','_','_','_','_','_',
+      '_','_','C','C','C','C','C','C','C','C','C','_','_','_','_','_',
+      '_','_','C','C','B','B','B','B','B','C','C','_','_','S','_','_',
+      '_','_','C','C','C','C','C','C','C','C','C','_','_','S','_','_',
+      'A','A','_','C','C','C','C','C','C','C','_','_','S','S','S','_',
+      '_','_','_','_','C','C','C','C','C','_','_','_','_','_','_','_',
+      '_','_','_','_','C','C','_','_','C','C','_','_','_','_','_','_',
+      '_','_','_','_','T','T','_','_','T','T','_','_','_','_','_','_',
+      '_','_','_','_','T','T','_','_','T','T','_','_','_','_','_','_',
+      '_','_','_','_','H','T','_','_','T','H','_','_','_','_','_','_',
+      '_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_',
+      '_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_',
+    ];drawFrame(thumbsUp);});
+    wrap.addEventListener('mouseleave',()=>{hovering=false;frame=0;});
   }
   drawFrame(frames[0]);
   requestAnimationFrame(animate);
 }
 
-// ─── INIT ──────────────────────────────────────
+// ══════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════
 renderProducts();
 renderArtisans();
 initGrass();
