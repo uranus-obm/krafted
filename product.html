@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product Details — Artisana</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --rose:#E18298; --plum:#796C8C; --teal:#679F9E; --cream:#E6D4BE; --ink:#2A2425; --muted:#8A8490; --border:#ECDDD4; --font-display:'Cormorant Garamond', serif; --font-body:'DM Sans', sans-serif; --radius:18px; --transition:0.38s cubic-bezier(0.22,1,0.36,1);
+    }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:var(--font-body); background:#fff; color:var(--ink); line-height:1.6; }
+    nav { padding: 18px 28px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:12px; }
+    .back-link { text-decoration:none; font-weight:500; color:var(--plum); }
+    .container { max-width:1020px; margin:32px auto; padding:0 20px; }
+    .detail-grid { display:grid; grid-template-columns:1fr 1fr; gap:28px; align-items:start; }
+    .detail-card { border:1.5px solid var(--border); border-radius:20px; overflow:hidden; position:relative; }
+    .carousel { position:relative; overflow:hidden; }
+    .carousel-track { display:flex; transition: transform .35s ease; }
+    .carousel-slide { min-width:100%; height:0; padding-top:80%; position:relative; }
+    .carousel-slide img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+    .carousel-controls { position:absolute; inset:0; display:flex; justify-content:space-between; align-items:center; pointer-events:none; }
+    .carousel-btn { pointer-events:auto; background:rgba(255,255,255,.85); border:none; width:34px; height:34px; border-radius:50%; display:grid; place-items:center; font-size:18px; color:var(--ink); cursor:pointer; transition:transform .2s; }
+    .carousel-btn:hover { transform:scale(1.08); }
+    .carousel-dots { position:absolute; bottom:12px; left:50%; transform:translateX(-50%); display:flex; gap:8px; }
+    .carousel-dot { width:10px; height:10px; border-radius:50%; background:rgba(255,255,255,.75); border:1px solid rgba(42,36,37,.2); cursor:pointer; }
+    .carousel-dot.active { background:var(--plum); }
+    .detail-info { display:flex; flex-direction:column; gap:16px; }
+    .detail-info h1 { font-family:var(--font-display); font-size:clamp(1.8rem,3vw,2.6rem); }
+    .detail-info .meta { display:flex; gap:14px; align-items:center; flex-wrap:wrap; color:var(--muted); font-size:14px; }
+    .badge { border-radius:16px; padding:4px 12px; font-size:12px; font-weight:600; color:#fff; letter-spacing:.04em; }
+    .badge-sale { background:var(--rose);} .badge-new { background:var(--teal);} .badge-limited { background:var(--plum); }
+    .price { font-size:1.8rem; font-weight:600; color:var(--ink); }
+    .old-price { color:var(--muted); text-decoration:line-through; font-size:1rem; margin-left:8px; }
+    .description { padding:16px; border:1.5px solid var(--border); border-radius:16px; background:var(--off); }
+    .btn { width:max-content; padding:12px 24px; border-radius:40px; border:none; background:var(--ink); color:#fff; cursor:pointer; transition:all .2s; }
+    .btn:hover { background:var(--plum); }
+    .not-found { text-align:center; padding:72px 16px; font-size:1.1rem; color:var(--muted); }
+    @media(max-width:900px){ .detail-grid{grid-template-columns:1fr;} }
+  </style>
+</head>
+<body>
+  <nav><a class="back-link" href="main.html">← Back to Shop</a></nav>
+  <main class="container" id="product-root"></main>
+  <script>
+    const products = [
+      { id:1, name:"Terracotta Planter", cat:"Ceramics", price:799, orig:1199, img:"https://images.unsplash.com/photo-1585414848823-a04ea6bc2e18?w=600&q=80", images:["https://images.unsplash.com/photo-1585414848823-a04ea6bc2e18?w=900&q=80","https://images.unsplash.com/photo-1601297154876-74116a8615f3?w=900&q=80","https://images.unsplash.com/photo-1542252572-4b04e1998fdd?w=900&q=80"], badge:"sale", featured:false, desc:"Hand-thrown terracotta planter.", rating:4.8 },
+      { id:2, name:"Block Print Kurta", cat:"Textiles", price:1450, orig:null, img:"https://images.unsplash.com/photo-1589810264340-0ce15b4e13b3?w=600&q=80", images:["https://images.unsplash.com/photo-1589810264340-0ce15b4e13b3?w=900&q=80","https://images.unsplash.com/photo-1520975922107-30f3f3b14997?w=900&q=80","https://images.unsplash.com/photo-1607901927494-2ee8e9f33fbf?w=900&q=80"], badge:"", featured:false, desc:"Hand block-printed kurta.", rating:4.9 },
+      { id:3, name:"Silver Leaf Earrings", cat:"Jewellery", price:650, orig:null, img:"https://images.unsplash.com/photo-1611652022419-a9419f74343d?w=600&q=80", images:["https://images.unsplash.com/photo-1611652022419-a9419f74343d?w=900&q=80","https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?w=900&q=80","https://images.unsplash.com/photo-1503602642458-232111445657?w=900&q=80"], badge:"new", featured:true, desc:"Delicate silver leaf earrings.", rating:4.7 },
+      { id:4, name:"Macramé Wall Art", cat:"Home Decor", price:1299, orig:1799, img:"https://images.unsplash.com/photo-1617713964959-d9a36bbc7b52?w=600&q=80", images:["https://images.unsplash.com/photo-1617713964959-d9a36bbc7b52?w=900&q=80","https://images.unsplash.com/photo-1578898884769-a740ee7bd913?w=900&q=80","https://images.unsplash.com/photo-1585917787173-f2c6dc043e34?w=900&q=80"], badge:"sale", featured:true, desc:"Handknotted macramé art.", rating:5.0 },
+      { id:5, name:"Cane Rattan Basket", cat:"Home Decor", price:549, orig:null, img:"https://images.unsplash.com/photo-1567637089835-40fc68d4a87d?w=600&q=80", images:["https://images.unsplash.com/photo-1567637089835-40fc68d4a87d?w=900&q=80","https://images.unsplash.com/photo-1561055657-a93191ea6320?w=900&q=80","https://images.unsplash.com/photo-1581380414158-1ef1f3cd64c5?w=900&q=80"], badge:"", featured:false, desc:"Natural rattan storage basket.", rating:4.6 },
+      { id:6, name:"Handloom Tote Bag", cat:"Bags", price:899, orig:null, img:"https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&q=80", images:["https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=900&q=80","https://images.unsplash.com/photo-1556905055-8f358a7a47b1?w=900&q=80","https://images.unsplash.com/photo-1485966232325-8a0272a2c4f7?w=900&q=80"], badge:"new", featured:true, desc:"Sustainable handloom tote.", rating:4.9 },
+      { id:7, name:"Blue Pottery Mug", cat:"Ceramics", price:425, orig:null, img:"https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=600&q=80", images:["https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=900&q=80","https://images.unsplash.com/photo-1514986888952-8cd320577b04?w=900&q=80","https://images.unsplash.com/photo-1459557356011-9c6c76d4d3b7?w=900&q=80"], badge:"limited", featured:false, desc:"Jaipur blue pottery mug.", rating:4.8 },
+      { id:8, name:"Ajrakh Table Runner", cat:"Textiles", price:980, orig:null, img:"https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=600&q=80", images:["https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=900&q=80","https://images.unsplash.com/photo-1544717305-2782549b5136?w=900&q=80","https://images.unsplash.com/photo-1545012645-35c15b6e3626?w=900&q=80"], badge:"new", featured:true, desc:"Traditional Ajrakh table runner.", rating:4.7 }
+    ];
+
+    const productId = Number(new URLSearchParams(window.location.search).get('id'));
+    const product = products.find(p => p.id === productId);
+    const root = document.getElementById('product-root');
+
+    if (!product) {
+      root.innerHTML = '<div class="not-found">Product not found. <a href="main.html">Return to shop</a>.</div>';
+    } else {
+      const badge = product.badge ? `<span class="badge badge-${product.badge}">${product.badge.toUpperCase()}</span>` : '';
+      const origPrice = product.orig ? `<span class="old-price">₹${product.orig.toLocaleString()}</span>` : '';
+      const images = Array.isArray(product.images) && product.images.length ? product.images : [product.img];
+
+      const slides = images.map((img, idx) => `
+        <div class="carousel-slide">
+          <img src="${img || product.img}" alt="${product.name} ${idx + 1}" loading="lazy">
+        </div>
+      `).join('');
+
+      const dots = images.map((_, idx) => `<span class="carousel-dot${idx===0?' active':''}" data-index="${idx}"></span>`).join('');
+
+      root.innerHTML = `
+        <div class="detail-grid">
+          <div class="detail-card">
+            <div class="carousel" id="product-carousel">
+              <div class="carousel-track">${slides}</div>
+              <div class="carousel-controls">
+                <button class="carousel-btn" id="carousel-prev" aria-label="Previous image">&#10094;</button>
+                <button class="carousel-btn" id="carousel-next" aria-label="Next image">&#10095;</button>
+              </div>
+              <div class="carousel-dots">${dots}</div>
+            </div>
+          </div>
+          <div class="detail-info">
+            <div class="meta"><span>${product.cat}</span>${badge}</div>
+            <h1>${product.name}</h1>
+            <div class="price">₹${product.price.toLocaleString()} ${origPrice}</div>
+            <div class="meta">Rating: ${product.rating} ★</div>
+            <div class="description">${product.desc}</div>
+            <button class="btn" onclick="alert('Add to cart on detail page (coming soon)')">Add to Cart</button>
+          </div>
+        </div>
+      `;
+
+      const track = document.querySelector('.carousel-track');
+      const prevBtn = document.getElementById('carousel-prev');
+      const nextBtn = document.getElementById('carousel-next');
+      const dotEls = Array.from(document.querySelectorAll('.carousel-dot'));
+      let currentSlide = 0;
+
+      const updateCarousel = (index) => {
+        const maxIndex = images.length - 1;
+        if (index < 0) index = maxIndex;
+        if (index > maxIndex) index = 0;
+        currentSlide = index;
+        track.style.transform = `translateX(-${index * 100}%)`;
+        dotEls.forEach((dot, idx) => dot.classList.toggle('active', idx === index));
+      };
+
+      prevBtn.addEventListener('click', (e) => { e.stopPropagation(); updateCarousel(currentSlide - 1); });
+      nextBtn.addEventListener('click', (e) => { e.stopPropagation(); updateCarousel(currentSlide + 1); });
+      dotEls.forEach((dot) => {
+        dot.addEventListener('click', (e) => { e.stopPropagation(); updateCarousel(Number(dot.dataset.index)); });
+      });
+
+      if (images.length <= 1) {
+        prevBtn.style.display = 'none';
+        nextBtn.style.display = 'none';
+        document.querySelector('.carousel-dots').style.display = 'none';
+      }
+    }
+  </script>
+</body>
+</html>
